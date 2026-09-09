@@ -10,5 +10,5 @@ app.get("/", (req, res)=>{ //app is our application then we use get / is the add
 });
 
 app.listen(PORT,()=>{ //this is what brings the server alive here the app actually starts paying attention for incoming request it opens the server for action the res doesn't send back until this function opens up shop
-    console.log(`Server running on port ${PORT}`); //terminal message for me
+    console.log(`Server running on port ${PORT}`); //terminal message for us
 });
