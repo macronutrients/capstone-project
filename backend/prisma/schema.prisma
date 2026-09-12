@@ -1,0 +1,66 @@
+// Prisma schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Stores habits that were created by users.
+model Habit {
+  id          Int       @id @default(autoincrement())
+  description String
+  notes       String?
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  // Connects this habit to a specific user.
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+// Stores pets that were retrieved from the API.
+model Pet {
+  id       Int     @id @default(autoincrement())
+  apiPetId String  @unique
+  name     String?
+  imageUrl String
+
+  unlocks    PetCollection[] // Collection entries for users who have unlocked this pet.
+  selectedBy User[] @relation("CurrentPet") // Users who currently have this pet selected for their Habits page.
+}
+
+// Stores pets that were unlocked by each user.
+model PetCollection {
+  id     Int @id @default(autoincrement())
+  userId Int
+  petId  Int
+
+  // Connects this collection entry to a user.
+  user User @relation(fields: [userId], references: [id])
+  // Connects this collection entry to a pet.
+  pet  Pet  @relation(fields: [petId], references: [id])
+
+  // Prevents the same user from having the same pet more than once.
+  @@unique([userId, petId])
+}
+
+// Stores user account information.
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  stars    Int    @default(0)
+
+  habits Habit[] // Habits that were created by this user.
+  pets   PetCollection[] // Pets that were unlocked by this user.
+
+  // ID of the pet currently selected for the Habits page.
+  currentPetId Int?
+  currentPet   Pet? @relation("CurrentPet", fields: [currentPetId], references: [id]) // Pet that is currently selected by the user.
+}
