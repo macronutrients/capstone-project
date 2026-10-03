@@ -6,7 +6,20 @@ function Home() {
   // Stores the habit description typed into the input field.
   const [habitDescription, setHabitDescription] = useState('')
   // Stores the list of habits.
-  const [habits, setHabits] = useState([])
+  const [habits, setHabits] = useState([
+    /* Test habits for styling the cards.
+    {
+      id: 1,
+      description: 'Go for a walk',
+      completed: false,
+    },
+    {
+      id: 2,
+      description: 'Read 20 minutes',
+      completed: true,
+    },
+    */
+  ])
 
   // Navigation between pages.
   const navigate = useNavigate()
@@ -56,6 +69,33 @@ function Home() {
     }
   }
 
+  // Marks a habit as completed.
+  async function completeHabit(id) {
+    try {
+      // Sends a request to complete the habit.
+      const response = await fetch(
+        `http://localhost:3000/habits/${id}/complete`,
+        {
+          method: 'PATCH',
+        },
+      )
+      const data = await response.json()
+
+      // Replaces the matching habit with the updated habit.
+      setHabits((prevHabits) =>
+        prevHabits.map((habit) => {
+          if (habit.id === id) {
+            return data.habit
+          }
+
+          return habit
+        }),
+      )
+    } catch (error) {
+      console.error('Error completing habit:', error)
+    }
+  }
+
   // Loads the habits when the page opens.
   useEffect(() => {
     getHabits()
@@ -86,7 +126,7 @@ function Home() {
           LOGOUT
         </button>
       </aside>
-      
+
       <main className='home-content'>
         {/* Section for adding a new habit */}
         <div className='add-habit'>
@@ -96,21 +136,39 @@ function Home() {
             value={habitDescription}
             onChange={(event) => setHabitDescription(event.target.value)}
           />
-          
+
           <button onClick={addHabit}>Add</button>
         </div>
-
-        <h2>My Habits</h2>
-
-        <p>{habitMessage}</p>
         
+        <h2>My Habits</h2>
+        <p>{habitMessage}</p>
+
         <div className='habit-list'>
           {/* Creates a card for each habit. */}
-          {habits.map((habit) => (
-            <div className='habit-card' key={habit.id}>
-              <span>{habit.description}</span>
-            </div>
-          ))}
+          {habits.map((habit) => {
+            let completeMark = ''
+            let habitClass = ''
+
+            if (habit.completed) {
+              completeMark = '✔️'
+              habitClass = 'completed-habit'
+            }
+            return (
+              <div className='habit-card' key={habit.id}>
+                {/* Displays the habit description. */}
+                <div className='habit-info'>
+                  <span className={habitClass}>{habit.description}</span>
+                </div>
+
+                <button
+                  className='complete-button'
+                  onClick={() => completeHabit(habit.id)}
+                >
+                  {completeMark}
+                </button>
+              </div>
+            )
+          })}
         </div>
       </main>
     </div>
