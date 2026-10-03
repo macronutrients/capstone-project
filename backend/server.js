@@ -1,3 +1,4 @@
+require("dotenv").config();//for our secret variable
 const express = require("express"); //this loads the express items that were downloaded
 const habitRoutes = require("./routes/habitRoutes"); //here we are loading the local files that I have created in javascript this case habitRoutes
 

@@ -4,10 +4,12 @@ const router = express.Router();//use express and create router object the route
 const {PrismaClient} = require("../generated/prisma"); //getting the database stuff from database section and loading it
 const prisma = new PrismaClient(); //the shorthand for it now we have it inside the variable prisma
 
+const{requireAuth} = require("../middleware/authentiMiddware") //bringing in our backend security function
+
 //g all habits
-router.get("/", async (req, res)=> { //req incoming request that already happened
+router.get("/", requireAuth, async (req, res)=> { //req incoming request that already happened
     try {
-        const habits = await prisma.habit.findMany(); //gathering our intel of what we want to send back(all of the habits records) because of our findmany function
+        const habits = await prisma.habit.findMany({where:{userId:req.user.id}}); //gathering our intel of what we want to send back(all of the habits records) because of our findmany function
     res.json(habits);} //sends it back
     catch(error){ //error message creator 
         res.status(500).json({message: "Unable to create Habits"}); //send back this error message to the requester
@@ -15,7 +17,7 @@ router.get("/", async (req, res)=> { //req incoming request that already happene
 });
 
 //g one habit
-router.get("/:id", async(req,res) => { //now after this request has already been sent now we want something more specific
+router.get("/:id", requireAuth, async(req,res) => { //now after this request has already been sent now we want something more specific
     try{
         const habit = await prisma.habit.findUnique({ //use findUnique to declare we want specific
             where:{
@@ -33,11 +35,11 @@ router.get("/:id", async(req,res) => { //now after this request has already been
     }
 });
 //this time we are creating a habbit instead of pulling hairs for specifics thanks to our create function
-router.post("/", async (req,res)=>{ //so go into habits looks at the request and send back
+router.post("/", requireAuth,async (req,res)=>{ //so go into habits looks at the request and send back
     try{
         const newHabit = await prisma.habit.create({ //a new habbit we create a new habbit using prisma the database communicator
             data:{
-                description:req.body.description, notes: req.body.notes, userId: Number(req.body.userId) //database info
+                description:req.body.description, notes: req.body.notes, userId: req.user.id //database info
             }
         });
         res.status(201).json(newHabit); //201 created succesfully now we move on to sending it back but in json form
@@ -48,7 +50,7 @@ router.post("/", async (req,res)=>{ //so go into habits looks at the request and
 
 });
 //complete the habbit creation process
-router.patch("/:id/complete", async(req,res)=>{
+router.patch("/:id/complete", requireAuth, async(req,res)=>{
     try{
     const habit = await prisma.habit.findUnique({
         where:{id:Number(req.params.id)} //requesting specifcs
@@ -82,7 +84,7 @@ router.patch("/:id/complete", async(req,res)=>{
 }
 });
 //our second patch this is mostly for editing the habit, instead of marking it as complete like the other one and giving away stars
-router.patch("/:id", async(req, res) =>{ //same principle though go into the file the specific id ofcourse that were looking for get the request
+router.patch("/:id", requireAuth, async(req, res) =>{ //same principle though go into the file the specific id ofcourse that were looking for get the request
     try{ //try something risky out
         const habit = await prisma.habit.findUnique({ // we go into the habbit and look for that specific habit id instead of all of the habits
             where:{id:Number(req.params.id)} //get the information that we want to edit
@@ -92,7 +94,7 @@ router.patch("/:id", async(req, res) =>{ //same principle though go into the fil
                 message:"habit not found" // the message
             });
         }
-        constupdatedHabit = await prisma.habit.update({ //if we found it continue, and this time we wait to ofcourse get the correct information then we use update to perform the task with
+        const updatedHabit = await prisma.habit.update({ //if we found it continue, and this time we wait to ofcourse get the correct information then we use update to perform the task with
             where:{id:Number(req.params.id)}, // all of these lovely parameters to get the correct information
             data:{description:req.body.description, notes:req.body.notes}
         });
@@ -108,7 +110,7 @@ router.patch("/:id", async(req, res) =>{ //same principle though go into the fil
     }
 });
 
-router.delete("/:id",async(req,res) => {//we go into the specific habit using id then we get the requested information with ofcourse async because were prolly gooing to have to wait for someone
+router.delete("/:id", requireAuth, async(req,res) => {//we go into the specific habit using id then we get the requested information with ofcourse async because were prolly gooing to have to wait for someone
     try{
         const habit = await prisma.habit.findUnique({ //store the unique habit in habbit after we have finished receiving the infomation because this is where were waiting
             where:{id:Number(req.params.id)} //the required specifics
@@ -119,7 +121,7 @@ router.delete("/:id",async(req,res) => {//we go into the specific habit using id
             });
         }
 
-const deleteHabit = await prisma.habit.delete({ //where the actual deleting is taking place
+const deletedHabit = await prisma.habit.delete({ //where the actual deleting is taking place
     where:{ id:Number(req.params.id)} //make sure where deleting the right habit which ofcourse is stored in the deletehabit variable
 
 });
