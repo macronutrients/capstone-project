@@ -30,6 +30,7 @@ model Pet {
   apiPetId String  @unique
   name     String?
   imageUrl String
+  requiredStars Int @default(0)
 
   unlocks    PetCollection[] // Collection entries for users who have unlocked this pet.
   selectedBy User[] @relation("CurrentPet") // Users who currently have this pet selected for their Habits page.
