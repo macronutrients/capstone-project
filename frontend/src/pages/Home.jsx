@@ -6,20 +6,7 @@ function Home() {
   // Stores the habit description typed into the input field.
   const [habitDescription, setHabitDescription] = useState('')
   // Stores the list of habits.
-  const [habits, setHabits] = useState([
-    /* Test habits for styling the cards.
-    {
-      id: 1,
-      description: 'Go for a walk',
-      completed: false,
-    },
-    {
-      id: 2,
-      description: 'Read 20 minutes',
-      completed: true,
-    },
-    */
-  ])
+  const [habits, setHabits] = useState([])
 
   // Navigation between pages.
   const navigate = useNavigate()
@@ -96,6 +83,25 @@ function Home() {
     }
   }
 
+  // Deletes a habit.
+  async function deleteHabit(id) {
+    try {
+      // Sends a request to delete the habit.
+      const response = await fetch(`http://localhost:3000/habits/${id}`, {
+        method: 'DELETE',
+      })
+      const data = await response.json()
+
+      // Removes the deleted habit from the list.
+      setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id))
+      // Shows a message after deleting.
+      alert(data.message)
+
+    } catch (error) {
+      console.error('Error deleting habit:', error)
+    }
+  }
+
   // Loads the habits when the page opens.
   useEffect(() => {
     getHabits()
@@ -139,7 +145,7 @@ function Home() {
 
           <button onClick={addHabit}>Add</button>
         </div>
-        
+
         <h2>My Habits</h2>
         <p>{habitMessage}</p>
 
@@ -148,18 +154,25 @@ function Home() {
           {habits.map((habit) => {
             let completeMark = ''
             let habitClass = ''
-
+           
+            // Adds a checkmark and crosses out the text for a completed habit.
             if (habit.completed) {
               completeMark = '✔️'
               habitClass = 'completed-habit'
             }
             return (
               <div className='habit-card' key={habit.id}>
-                {/* Displays the habit description. */}
+                {/* Displays the habit description and delete button. */}
                 <div className='habit-info'>
                   <span className={habitClass}>{habit.description}</span>
-                </div>
 
+                  <div className='habit-actions'>
+                    <button onClick={() => deleteHabit(habit.id)}>
+                      delete
+                    </button>
+                  </div>
+                </div>
+                {/* Completes the habit when clicked. */}
                 <button
                   className='complete-button'
                   onClick={() => completeHabit(habit.id)}

@@ -104,12 +104,21 @@
 
 .completed-habit {
   text-decoration: line-through; /* Adds a line through the text of a completed habit. */
-  opacity: 0.6;
+  opacity: 0.6; /* Makes the habit look faded. */
 }
 
-/* Arranges the habit information vertically */
+/* Arranges the habit information and action buttons vertically */
 .habit-info {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.habit-actions button {
+  border: none;
+  background: transparent;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  cursor: pointer;
 }
