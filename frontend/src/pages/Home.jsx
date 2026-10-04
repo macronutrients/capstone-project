@@ -76,6 +76,51 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
     localStorage.removeItem("token") //now we actually get rid of the digital pass then go back to the login page
     navigate("/") //what sends us back to login
   }
+  // Marks a habit as completed.
+  async function completeHabit(id) {
+    try {
+      // Sends a request to complete the habit.
+      const response = await fetch(
+        `http://localhost:3000/habits/${id}/complete`,
+        {
+          method: 'PATCH',
+        },
+      )
+      const data = await response.json()
+
+      // Replaces the matching habit with the updated habit.
+      setHabits((prevHabits) =>
+        prevHabits.map((habit) => {
+          if (habit.id === id) {
+            return data.habit
+          }
+
+          return habit
+        }),
+      )
+    } catch (error) {
+      console.error('Error completing habit:', error)
+    }
+  }
+
+  // Deletes a habit.
+  async function deleteHabit(id) {
+    try {
+      // Sends a request to delete the habit.
+      const response = await fetch(`http://localhost:3000/habits/${id}`, {
+        method: 'DELETE',
+      })
+      const data = await response.json()
+
+      // Removes the deleted habit from the list.
+      setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id))
+      // Shows a message after deleting.
+      alert(data.message)
+
+    } catch (error) {
+      console.error('Error deleting habit:', error)
+    }
+  }
 
   // Loads the habits when the page opens.
   useEffect(() => {
@@ -109,7 +154,7 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
         </button>
   
       </aside>
-      
+
       <main className='home-content'>
         {/* Section for adding a new habit */}
         <div className='add-habit'>
@@ -119,21 +164,46 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
             value={habitDescription}
             onChange={(event) => setHabitDescription(event.target.value)}
           />
-          
+
           <button onClick={addHabit}>Add</button>
         </div>
 
         <h2>My Habits</h2>
-
         <p>{habitMessage}</p>
-        
+
         <div className='habit-list'>
           {/* Creates a card for each habit. */}
-          {habits.map((habit) => (
-            <div className='habit-card' key={habit.id}>
-              <span>{habit.description}</span>
-            </div>
-          ))}
+          {habits.map((habit) => {
+            let completeMark = ''
+            let habitClass = ''
+           
+            // Adds a checkmark and crosses out the text for a completed habit.
+            if (habit.completed) {
+              completeMark = '✔️'
+              habitClass = 'completed-habit'
+            }
+            return (
+              <div className='habit-card' key={habit.id}>
+                {/* Displays the habit description and delete button. */}
+                <div className='habit-info'>
+                  <span className={habitClass}>{habit.description}</span>
+
+                  <div className='habit-actions'>
+                    <button onClick={() => deleteHabit(habit.id)}>
+                      delete
+                    </button>
+                  </div>
+                </div>
+                {/* Completes the habit when clicked. */}
+                <button
+                  className='complete-button'
+                  onClick={() => completeHabit(habit.id)}
+                >
+                  {completeMark}
+                </button>
+              </div>
+            )
+          })}
         </div>
       </main>
     </div>
