@@ -1,0 +1,30 @@
+body
+{
+    background: #cbcffe;
+}
+
+h1
+{
+    color: red;
+    
+}
+
+.track
+{
+    text-align: center;
+    color: Green;
+}
+
+#con:hover
+{
+    background: #dccffe;
+    cursor:alias;
+}
+
+input
+{
+    font-size: xx-large;
+}
+
+
+
