@@ -7,3 +7,7 @@ div
     background: white;
     padding-left: 500;
 }
+button
+{
+    cursor: none;
+}
