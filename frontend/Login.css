@@ -7,3 +7,8 @@ div
     background: white;
     padding-left: 500;
 }
+input
+{
+    font-size: larger;
+    color: #0000FF;
+}
