@@ -2,13 +2,25 @@ body
 {
     background: #cbcffe;
 }
+
 div
 {
     background: white;
-    padding-left: 500;
+    padding: 20px;
+    margin: auto;
+    width: 500px;
+    margin-top: 30px;
+    border-radius: 5px;
 }
+
 input
 {
     font-size: larger;
     color: #0000FF;
+    text-align: center;
+}
+
+h1
+{
+    text-align: center;
 }
