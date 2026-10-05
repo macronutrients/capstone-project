@@ -79,16 +79,16 @@ router.post("/unlock/:petId", requireAuth, async(req,res)=>{ //we are calling th
                 message: "Pet is already unlocked" //return the message that you already have it
             });
         }
+        //adding the stars check
+        const user = await prisma.user.findUnique({//using the prisma for postgresql gets user information
+            where:{id:req.user.id} //the specific user information compared to the requested user information looking for a match
+        });
 
-        //I need to add something here later
-
-
-
-
-
-
-
-        //sooner or later
+        if(user.stars<pet.requiredStars){ //checks the user stars to be more than the required amount of stars we have stored
+            return res.status(403).json({ //returns an error mesage if this is not true I said it backwards but same idea
+                message: "Not enough stars to unlock this pet" // the actual error message
+            });
+        }
 
 
         const unlockedPet = await prisma.petCollection.create({ //unlocks a pet by first making changes to pet collection by creating a record

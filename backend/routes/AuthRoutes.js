@@ -3,6 +3,9 @@ const router = express.Router(); //create a new router using the express package
 
 const {PrismaClient} = require("../generated/prisma"); // were loading whatever is at generated prisma taking Prisma client out then pointing back to it
 const prisma = new PrismaClient(); //now after getting our blueprint above we actually create the object for communication
+
+const jsonWebToken = require("jsonwebtoken")//for the digital pass
+
 //checking usernames
 router.post("/register", async(req,res)=>{
     try{
@@ -41,8 +44,13 @@ router.post("/login",async(req,res)=>{ //async wait req res
         return res.status(401).json({message:"Incorrect Password" //the error code along with the error message password is incorrect
         });
     }
+
+    const token = jsonWebToken.sign({userId: user.id}, process.env.jsonWebToken_SECRET,
+        {expiresIn: "1h"}
+    );
+
     res.json({//sending back info to the requester but in json format
-        message: "Login successful", user:user //we are creating object user with json and putting our variable users information into it
+        message: "Login successful", user:user, token:token //we are creating object user with json and putting our variable users information into it
     });
 
 }

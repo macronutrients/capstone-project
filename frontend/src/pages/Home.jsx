@@ -11,13 +11,23 @@ function Home() {
   // Navigation between pages.
   const navigate = useNavigate()
 
+const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
+
   // Retrieves all habits from the backend.
   async function getHabits() {
     try {
+
+      const response = await fetch("http://localhost:3000/habits", { //still fetching the address but now we have isntructions for this address that were fetching
+        headers: { "Authorization": `Bearer ${token}`,}, //what our backend code expects to see in the authorization process
+      })
       // Sends a request to get the habit list.
-      const response = await fetch('http://localhost:3000/habits')
       const data = await response.json()
 
+
+      if(!response.ok){ //if response failed backend could not proceed with the request
+        console.error(data.message) //the error message
+        return
+      }
       // Stores the retrieved habits in state.
       setHabits(data)
     } catch (error) {
@@ -39,6 +49,7 @@ function Home() {
         // Tells the backend that the data is in JSON format.
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`, //add an additional instruction for authentication
         },
         // Sends the habit description as JSON.
         body: JSON.stringify({
@@ -46,6 +57,11 @@ function Home() {
         }),
       })
       const newHabit = await response.json()
+
+      if(!response.ok){ //change
+        console.error(newHabit.message)
+        return
+      }
 
       // Adds the newly created habit to the existing list.
       setHabits((prevHabits) => [...prevHabits, newHabit])
@@ -56,6 +72,10 @@ function Home() {
     }
   }
 
+  function logout(){
+    localStorage.removeItem("token") //now we actually get rid of the digital pass then go back to the login page
+    navigate("/") //what sends us back to login
+  }
   // Marks a habit as completed.
   async function completeHabit(id) {
     try {
@@ -128,9 +148,11 @@ function Home() {
         </div>
 
         {/* Returns the user to the login page. */}
-        <button className='logout-button' onClick={() => navigate('/')}>
-          LOGOUT
+
+        <button className="logout-button" onClick={logout}> {/*now on top of going back to the login page we also remove the digital pass */}
+          LOGOUT 
         </button>
+  
       </aside>
 
       <main className='home-content'>

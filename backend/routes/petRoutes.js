@@ -1,7 +1,9 @@
+
 const express = require("express"); //load express file legendary functions
 const router = express.Router(); //use the router legendary function
 
 const {PrismaClient} = require("../generated/prisma"); // load the prisma file this is technically a local file but it was ultimately gotten from somewhere else at some parts of it.
+const { requireAuth } = require("../middleware/authentiMiddware");
 const prisma = new PrismaClient(); //create an object file for this code have it by dynamic
 
 router.get("/", async(req, res)=>{//whole function just send the prisma pets to in json format to the requester
@@ -18,7 +20,7 @@ router.get("/", async(req, res)=>{//whole function just send the prisma pets to 
     }
 });
 
-router.get("/collection/:userId", async(req, res)=>{//this is meant to get all of the pets from the requesters user
+router.get("/collection/:userId", requireAuth, async(req, res)=>{//this is meant to get all of the pets from the requesters user
     try{
         const collection = await prisma.petCollection.findMany({ //here we are getting all of the pets from the prisma pet collection 
             where:{ userId: Number(req.params.userId)}, include:{pet: true} // here we are narrowing it down to the user id that matches the requesters user id, then we follow up with a pet true to get more information about the pet 
@@ -31,7 +33,7 @@ router.get("/collection/:userId", async(req, res)=>{//this is meant to get all o
     }
 });
 //here we are adding a pet to the users pet collection if they don't already have a pet
-router.post("/collection", async(req, res) =>{ //name of link followed by our wait code, and req res
+router.post("/collection", requireAuth, async(req, res) =>{ //name of link followed by our wait code, and req res
     try{
         const existingPet = await prisma.petCollection.findUnique({//find unique finds a specific datapoint using the information below and stores it in existing pet
             where:{ userId_petId:{ userId: Number(req.body.userId), petId: Number(req.body.petId)}} //comparing prismas pet and user ids to the requested one by the user
@@ -57,7 +59,7 @@ router.post("/collection", async(req, res) =>{ //name of link followed by our wa
     }
 });
 //updating the characters pet that he gets to see on his screen
-router.patch("/:petId/select", async (req, res) => {
+router.patch("/:petId/select", requireAuth, async (req, res) => {
     try{
         const collectionPet = await prisma.petCollection.findUnique({  //here we are just finding the right pet in pet collection
             where: { // we try to matc the pet with the userId and petId that we have stored compared to the requesters one
