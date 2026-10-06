@@ -11,20 +11,18 @@ function Home() {
   // Navigation between pages.
   const navigate = useNavigate()
 
-const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
+  const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
 
   // Retrieves all habits from the backend.
   async function getHabits() {
     try {
-
-      const response = await fetch("http://localhost:3000/habits", { //still fetching the address but now we have isntructions for this address that were fetching
-        headers: { "Authorization": `Bearer ${token}`,}, //what our backend code expects to see in the authorization process
+      const response = await fetch('http://localhost:3000/habits', { //still fetching the address but now we have isntructions for this address that were fetching
+        headers: { Authorization: `Bearer ${token}` }, //what our backend code expects to see in the authorization process
       })
       // Sends a request to get the habit list.
       const data = await response.json()
 
-
-      if(!response.ok){ //if response failed backend could not proceed with the request
+      if (!response.ok) { //if response failed backend could not proceed with the request
         console.error(data.message) //the error message
         return
       }
@@ -49,7 +47,7 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
         // Tells the backend that the data is in JSON format.
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`, //add an additional instruction for authentication
+          Authorization: `Bearer ${token}`, //add an additional instruction for authentication
         },
         // Sends the habit description as JSON.
         body: JSON.stringify({
@@ -58,7 +56,7 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
       })
       const newHabit = await response.json()
 
-      if(!response.ok){ //change
+      if (!response.ok) {
         console.error(newHabit.message)
         return
       }
@@ -72,10 +70,11 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
     }
   }
 
-  function logout(){
-    localStorage.removeItem("token") //now we actually get rid of the digital pass then go back to the login page
-    navigate("/") //what sends us back to login
+  function logout() {
+    localStorage.removeItem('token') //now we actually get rid of the digital pass then go back to the login page
+    navigate('/') //what sends us back to login
   }
+
   // Marks a habit as completed.
   async function completeHabit(id) {
     try {
@@ -84,9 +83,17 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
         `http://localhost:3000/habits/${id}/complete`,
         {
           method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
       )
       const data = await response.json()
+
+      if (!response.ok) {
+        console.error(data.message)
+        return
+      }
 
       // Replaces the matching habit with the updated habit.
       setHabits((prevHabits) =>
@@ -109,14 +116,21 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
       // Sends a request to delete the habit.
       const response = await fetch(`http://localhost:3000/habits/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       const data = await response.json()
+
+      if (!response.ok) {
+        console.error(data.message)
+        return
+      }
 
       // Removes the deleted habit from the list.
       setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id))
       // Shows a message after deleting.
       alert(data.message)
-
     } catch (error) {
       console.error('Error deleting habit:', error)
     }
@@ -149,10 +163,9 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
 
         {/* Returns the user to the login page. */}
 
-        <button className="logout-button" onClick={logout}> {/*now on top of going back to the login page we also remove the digital pass */}
-          LOGOUT 
+        <button className='logout-button' onClick={logout}> {/*now on top of going back to the login page we also remove the digital pass */}
+          LOGOUT
         </button>
-  
       </aside>
 
       <main className='home-content'>
@@ -176,7 +189,7 @@ const token = localStorage.getItem('token') //frontend longer term storagelocals
           {habits.map((habit) => {
             let completeMark = ''
             let habitClass = ''
-           
+
             // Adds a checkmark and crosses out the text for a completed habit.
             if (habit.completed) {
               completeMark = '✔️'
