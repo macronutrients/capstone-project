@@ -1,12 +1,15 @@
 import './Home.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import EditHabit from '../components/EditHabit'
 
 function Home() {
   // Stores the habit description typed into the input field.
   const [habitDescription, setHabitDescription] = useState('')
   // Stores the list of habits.
   const [habits, setHabits] = useState([])
+  // Stores the ID of the habit being edited.
+  const [editingHabitId, setEditingHabitId] = useState(null)
 
   // Navigation between pages.
   const navigate = useNavigate()
@@ -16,10 +19,10 @@ function Home() {
   // Retrieves all habits from the backend.
   async function getHabits() {
     try {
+      // Sends a request to get the habit list.
       const response = await fetch('http://localhost:3000/habits', { //still fetching the address but now we have isntructions for this address that were fetching
         headers: { Authorization: `Bearer ${token}` }, //what our backend code expects to see in the authorization process
       })
-      // Sends a request to get the habit list.
       const data = await response.json()
 
       if (!response.ok) { //if response failed backend could not proceed with the request
@@ -135,6 +138,23 @@ function Home() {
       console.error('Error deleting habit:', error)
     }
   }
+ 
+  // Updates the habit list after saving an edit.
+  function handleSave(updatedHabit) {
+    // Replaces the matching habit with the updated habit.
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) => {
+        if (habit.id === updatedHabit.id) {
+          return updatedHabit
+        }
+
+        return habit
+      }),
+    )
+
+    // Closes the editing form.
+    setEditingHabitId(null)
+  }
 
   // Loads the habits when the page opens.
   useEffect(() => {
@@ -197,24 +217,48 @@ function Home() {
             }
             return (
               <div className='habit-card' key={habit.id}>
-                {/* Displays the habit description and delete button. */}
+                {/* Displays the habit description and action buttons when not editing. */}
                 <div className='habit-info'>
-                  <span className={habitClass}>{habit.description}</span>
+                  {editingHabitId !== habit.id && (
+                    <>
+                      <span className={habitClass}>{habit.description}</span>
 
-                  <div className='habit-actions'>
-                    <button onClick={() => deleteHabit(habit.id)}>
-                      delete
-                    </button>
-                  </div>
+                      <div className='habit-actions'>
+                        
+                        {!habit.completed && (
+                          <button onClick={() => setEditingHabitId(habit.id)}>
+                            edit
+                            </button>
+                        )}
+                        <button onClick={() => deleteHabit(habit.id)}>
+                          delete
+                        </button>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Shows the editing form for the selected habit. */}
+                  {editingHabitId === habit.id && (
+                    <EditHabit
+                      // Passes the selected habit to the EditHabit component.
+                      habit={habit}
+                      // Updates the habit list after saving the edited habit.
+                      onSave={handleSave}
+                      // Closes the editing form when Cancel is clicked.
+                      onCancel={() => setEditingHabitId(null)}
+                    />
+                  )}
                 </div>
-                {/* Completes the habit when clicked. */}
-                <button
+                {/* Completes the habit when clicked (only when the habit is not being edited). */}
+                {editingHabitId !== habit.id && (
+                  <button
                   className='complete-button'
                   onClick={() => completeHabit(habit.id)}
-                >
-                  {completeMark}
-                </button>
-              </div>
+                  >
+                    {completeMark}
+                    </button>
+                  )}
+                  </div>
             )
           })}
         </div>
