@@ -18,7 +18,7 @@ con.addEventListener("click", function()
 
     if(confirmed == first_password && first_password.length > 7)
     {
-        window.location.href = "file:///Users/theoorecchio/Downloads/Habit%20Login/Login.html";
+        window.location.href = "file:///Users/theoorecchio/Downloads/Habit%20Login/capstone-project/frontend/Login.html";
         hidden.innerHTML="";
         repeated.innerHTML="";
     }

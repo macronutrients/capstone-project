@@ -2,12 +2,40 @@ body
 {
     background: #cbcffe;
 }
+
 div
 {
-    background: white;
-    padding-left: 500;
+    background: #EEEEEE;
+    padding: 20px;
+    margin: auto;
+    width: 500px;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+
+input
+{
+    font-size: larger;
+    color: #0000FF;
+    text-align: center;
+    margin-left: 150px;
+    margin-top: 50px;
+}
+
+h1
+{
+    text-align: center;
+}
+#login
+{
+    margin-left: 200px;
+}
+#sign_up
+{
+    margin-left: 10px;
 }
 button
 {
-    cursor: none;
+    cursor: alias;
+    margin-top: 30px;
 }

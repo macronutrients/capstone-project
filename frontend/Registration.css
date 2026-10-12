@@ -3,18 +3,19 @@ body
     background: #cbcffe;
 }
 
-h1
-{
-    color: red;
-    
-}
+
 
 .track
 {
     text-align: center;
-    color: Green;
+    
 }
 
+#con
+{
+    margin-left: 100px;
+    margin-top: 30px;
+}
 #con:hover
 {
     background: #dccffe;
@@ -24,11 +25,21 @@ h1
 input
 {
     font-size: xx-large;
+    margin-top: 50px;
 }
 
-div
+#main
 {
     padding-left: 500;
+    background: #EEEEEE;
+    border-radius: 50px;
+}
+
+#reg
+{
+    background: #F25560;
+    margin-left: -500px;
+    text-align: center;
 }
 
 
