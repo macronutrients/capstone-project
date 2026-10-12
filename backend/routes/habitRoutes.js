@@ -28,6 +28,13 @@ router.get("/:id", requireAuth, async(req,res) => { //now after this request has
     if(!habit){
         return res.status(404).json({message:"Habit not found"});//error message not found but code ran
     }
+
+    if(habit.userId !== req.user.id){//backend further protection actually checks if its the correct user
+        return res.status(403).json({ //the error code 403
+            message: "You do not have permission to access this habit" //the error message
+        })
+    }
+
     res.json(habit); //this just sends back to the requester the information that it wanted in relation to habits in the json format
     }
     catch(error){
@@ -59,7 +66,14 @@ router.patch("/:id/complete", requireAuth, async(req,res)=>{
     if(!habit){
         return res.status(404).json({message:"Habit not found"}); //unable to get what we wanted error
     }
+    
 
+    if(habit.userId !== req.user.id){ //additional backend security to make sure that the user requesting a habit change is actually the correct user
+        return res.status(403).json({//error message if not the correct usage code 403 
+            message: "You do not have permission to complete this habit" //the actual error message
+        });
+
+    }
     if(habit.completed){ //success not an error messsage actually celebration message
         return res.status(400).json({
             message:"Habit is already Complete"
@@ -94,6 +108,13 @@ router.patch("/:id", requireAuth, async(req, res) =>{ //same principle though go
                 message:"habit not found" // the message
             });
         }
+
+        if(habit.userId !== req.user.id){//checking to make sure the right user is doing the task
+            return res.status(403).json({ // if not throw the error code
+                message:"You do not have permission to update this habit" //the error message.
+            })
+        }
+
         const updatedHabit = await prisma.habit.update({ //if we found it continue, and this time we wait to ofcourse get the correct information then we use update to perform the task with
             where:{id:Number(req.params.id)}, // all of these lovely parameters to get the correct information
             data:{description:req.body.description, notes:req.body.notes}
@@ -121,6 +142,12 @@ router.delete("/:id", requireAuth, async(req,res) => {//we go into the specific 
             });
         }
 
+        if(habit.userId !== req.user.id){//checking to make sure the right user is doing the task
+            return res.status(403).json({ // if not throw the error code
+                message:"You do not have permission to delete this habit" //the error message.
+            })
+        }
+        
 const deletedHabit = await prisma.habit.delete({ //where the actual deleting is taking place
     where:{ id:Number(req.params.id)} //make sure where deleting the right habit which ofcourse is stored in the deletehabit variable
 
