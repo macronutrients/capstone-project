@@ -1,15 +1,13 @@
 const express = require("express");//loading express package
 const router = express.Router();//use express and create router object the route handling system
 
-const {PrismaClient} = require("../generated/prisma"); //getting the database stuff from database section and loading it
-const prisma = new PrismaClient(); //the shorthand for it now we have it inside the variable prisma
-
+const {db} = require("../src/prisma/db.ts"); //prisma 8
 const{requireAuth} = require("../middleware/authentiMiddware") //bringing in our backend security function
 
 //g all habits
 router.get("/", requireAuth, async (req, res)=> { //req incoming request that already happened
     try {
-        const habits = await prisma.habit.findMany({where:{userId:req.user.id}}); //gathering our intel of what we want to send back(all of the habits records) because of our findmany function
+        const habits = await db.orm.public.habit.findMany({where:{userId:req.user.id}}); //gathering our intel of what we want to send back(all of the habits records) because of our findmany function
     res.json(habits);} //sends it back
     catch(error){ //error message creator 
         res.status(500).json({message: "Unable to create Habits"}); //send back this error message to the requester
@@ -19,7 +17,7 @@ router.get("/", requireAuth, async (req, res)=> { //req incoming request that al
 //g one habit
 router.get("/:id", requireAuth, async(req,res) => { //now after this request has already been sent now we want something more specific
     try{
-        const habit = await prisma.habit.findUnique({ //use findUnique to declare we want specific
+        const habit = await db.orm.public.habit.findUnique({ //use findUnique to declare we want specific
             where:{
                 id:Number(req.params.id) //going into file specifics
             }
@@ -59,7 +57,7 @@ router.post("/", requireAuth,async (req,res)=>{ //so go into habits looks at the
 //complete the habbit creation process
 router.patch("/:id/complete", requireAuth, async(req,res)=>{
     try{
-    const habit = await prisma.habit.findUnique({
+    const habit = await db.orm.public.habit.findUnique({
         where:{id:Number(req.params.id)} //requesting specifcs
     });
     
@@ -100,7 +98,7 @@ router.patch("/:id/complete", requireAuth, async(req,res)=>{
 //our second patch this is mostly for editing the habit, instead of marking it as complete like the other one and giving away stars
 router.patch("/:id", requireAuth, async(req, res) =>{ //same principle though go into the file the specific id ofcourse that were looking for get the request
     try{ //try something risky out
-        const habit = await prisma.habit.findUnique({ // we go into the habbit and look for that specific habit id instead of all of the habits
+        const habit = await db.orm.public.habit.findUnique({ // we go into the habbit and look for that specific habit id instead of all of the habits
             where:{id:Number(req.params.id)} //get the information that we want to edit
         });
         if(!habit){ //if we can't even at least find the correct habit throw the womp womp message
@@ -133,7 +131,7 @@ router.patch("/:id", requireAuth, async(req, res) =>{ //same principle though go
 
 router.delete("/:id", requireAuth, async(req,res) => {//we go into the specific habit using id then we get the requested information with ofcourse async because were prolly gooing to have to wait for someone
     try{
-        const habit = await prisma.habit.findUnique({ //store the unique habit in habbit after we have finished receiving the infomation because this is where were waiting
+        const habit = await db.orm.public.habit.findUnique({ //store the unique habit in habbit after we have finished receiving the infomation because this is where were waiting
             where:{id:Number(req.params.id)} //the required specifics
         });
         if(!habit){ //if we can not find the habit we are looking for then

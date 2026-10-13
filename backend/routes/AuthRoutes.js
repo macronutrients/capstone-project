@@ -1,8 +1,8 @@
 const express = require("express");// this line just loads the express packaage here and gives it to the variable express
 const router = express.Router(); //create a new router using the express package and store it in the variable router
 
-const {PrismaClient} = require("../generated/prisma"); // were loading whatever is at generated prisma taking Prisma client out then pointing back to it
-const prisma = new PrismaClient(); //now after getting our blueprint above we actually create the object for communication
+
+const {db} = require("../src/prisma/db.ts"); //now after getting our blueprint above we actually create the object for communication
 
 const jsonWebToken = require("jsonwebtoken")//for the digital pass
 
@@ -19,7 +19,7 @@ if(existinguser){ //if true then the email is already registered
     });
 }
 
-    const newUser = await prisma.user.create({ //if emails were not the same create a new user
+    const newUser = await db.orm.public.user.create({ //if emails were not the same create a new user
         data:{ email: req.body.email, password: req.body.password} // we do this using data, and update email to the new record
     });
     res.status(201).json({//this is where we send back our collection
@@ -34,7 +34,7 @@ catch(error){ //the erro message if things went south on the prisma json level
 //login basically match username and make sure password is correct
 router.post("/login",async(req,res)=>{ //async wait req res
     try {
-        const user = await prisma.user.findUnique({ //checking for the email match 
+        const user = await db.orm.public.user.findUnique({ //checking for the email match 
             where: {email: req.body.email} // email match and calling it user
         });
         if(!user){ //if no match then say user not found
