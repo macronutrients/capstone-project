@@ -1,0 +1,460 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.Habit",
+    "label": "Create table \"Habit\"",
+    "summary": "Creates table \"Habit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Habit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Habit\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Habit\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Habit\"",
+        "sql": "CREATE TABLE \"public\".\"Habit\" (\n  \"completed\" bool DEFAULT false NOT NULL,\n  \"completedAt\" timestamp(3),\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"description\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"notes\" text,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Habit\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Habit\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Pet",
+    "label": "Create table \"Pet\"",
+    "summary": "Creates table \"Pet\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Pet"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Pet\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pet\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Pet\"",
+        "sql": "CREATE TABLE \"public\".\"Pet\" (\n  \"apiPetId\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"imageUrl\" text NOT NULL,\n  \"name\" text,\n  \"requiredStars\" int4 DEFAULT 0 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Pet\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pet\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.PetCollection",
+    "label": "Create table \"PetCollection\"",
+    "summary": "Creates table \"PetCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "PetCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"PetCollection\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PetCollection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"PetCollection\"",
+        "sql": "CREATE TABLE \"public\".\"PetCollection\" (\n  \"id\" SERIAL NOT NULL,\n  \"petId\" int4 NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"PetCollection\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PetCollection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.User",
+    "label": "Create table \"User\"",
+    "summary": "Creates table \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"User\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"User\"",
+        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"currentPetId\" int4,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"password\" text NOT NULL,\n  \"stars\" int4 DEFAULT 0 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"User\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Pet.Pet_apiPetId_key",
+    "label": "Create index \"Pet_apiPetId_key\" on \"Pet\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Pet_apiPetId_key",
+        "table": "Pet"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Pet_apiPetId_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pet_apiPetId_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Pet_apiPetId_key\"",
+        "sql": "CREATE UNIQUE INDEX \"Pet_apiPetId_key\" ON \"public\".\"Pet\" (\"apiPetId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Pet_apiPetId_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pet_apiPetId_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.PetCollection.PetCollection_userId_petId_key",
+    "label": "Create index \"PetCollection_userId_petId_key\" on \"PetCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "PetCollection_userId_petId_key",
+        "table": "PetCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"PetCollection_userId_petId_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PetCollection_userId_petId_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"PetCollection_userId_petId_key\"",
+        "sql": "CREATE UNIQUE INDEX \"PetCollection_userId_petId_key\" ON \"public\".\"PetCollection\" (\"userId\", \"petId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"PetCollection_userId_petId_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PetCollection_userId_petId_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_email_key",
+    "label": "Create index \"User_email_key\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_email_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_email_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_email_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_email_key\"",
+        "sql": "CREATE UNIQUE INDEX \"User_email_key\" ON \"public\".\"User\" (\"email\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_email_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_email_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Habit.Habit_userId_fkey",
+    "label": "Add foreign key \"Habit_userId_fkey\" on \"Habit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Habit_userId_fkey",
+        "table": "Habit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Habit_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Habit_userId_fkey",
+          "public",
+          "\"public\".\"Habit\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Habit_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Habit\"\nADD CONSTRAINT \"Habit_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Habit_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Habit_userId_fkey",
+          "public",
+          "\"public\".\"Habit\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.PetCollection.PetCollection_userId_fkey",
+    "label": "Add foreign key \"PetCollection_userId_fkey\" on \"PetCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "PetCollection_userId_fkey",
+        "table": "PetCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"PetCollection_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PetCollection_userId_fkey",
+          "public",
+          "\"public\".\"PetCollection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"PetCollection_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"PetCollection\"\nADD CONSTRAINT \"PetCollection_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"PetCollection_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PetCollection_userId_fkey",
+          "public",
+          "\"public\".\"PetCollection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.PetCollection.PetCollection_petId_fkey",
+    "label": "Add foreign key \"PetCollection_petId_fkey\" on \"PetCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "PetCollection_petId_fkey",
+        "table": "PetCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"PetCollection_petId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PetCollection_petId_fkey",
+          "public",
+          "\"public\".\"PetCollection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"PetCollection_petId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"PetCollection\"\nADD CONSTRAINT \"PetCollection_petId_fkey\"\nFOREIGN KEY (\"petId\")\nREFERENCES \"public\".\"Pet\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"PetCollection_petId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "PetCollection_petId_fkey",
+          "public",
+          "\"public\".\"PetCollection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.User.User_currentPetId_fkey",
+    "label": "Add foreign key \"User_currentPetId_fkey\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "User_currentPetId_fkey",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"User_currentPetId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_currentPetId_fkey",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"User_currentPetId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"User\"\nADD CONSTRAINT \"User_currentPetId_fkey\"\nFOREIGN KEY (\"currentPetId\")\nREFERENCES \"public\".\"Pet\" (\"id\")\nON DELETE SET NULL\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"User_currentPetId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_currentPetId_fkey",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  }
+]

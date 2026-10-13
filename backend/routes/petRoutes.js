@@ -1,4 +1,4 @@
-
+//changed front end user sent information to our protected req.user.id that comes from the digital pass token
 const express = require("express"); //load express file legendary functions
 const router = express.Router(); //use the router legendary function
 
@@ -22,8 +22,13 @@ router.get("/", async(req, res)=>{//whole function just send the prisma pets to 
 
 router.get("/collection/:userId", requireAuth, async(req, res)=>{//this is meant to get all of the pets from the requesters user
     try{
+        if(Number(req.params.userId) !== req.user.id){
+            return res.status(403).json({ message: "You do not have permission to view this pet collection"
+
+            })
+        }
         const collection = await prisma.petCollection.findMany({ //here we are getting all of the pets from the prisma pet collection 
-            where:{ userId: Number(req.params.userId)}, include:{pet: true} // here we are narrowing it down to the user id that matches the requesters user id, then we follow up with a pet true to get more information about the pet 
+            where:{ userId: req.user.id}, include:{pet: true} // here we are narrowing it down to the user id that matches the requesters user id, then we follow up with a pet true to get more information about the pet 
         });
         res.json(collection);//here we sent back our findings to the requester in json format
     }
@@ -36,7 +41,7 @@ router.get("/collection/:userId", requireAuth, async(req, res)=>{//this is meant
 router.post("/collection", requireAuth, async(req, res) =>{ //name of link followed by our wait code, and req res
     try{
         const existingPet = await prisma.petCollection.findUnique({//find unique finds a specific datapoint using the information below and stores it in existing pet
-            where:{ userId_petId:{ userId: Number(req.body.userId), petId: Number(req.body.petId)}} //comparing prismas pet and user ids to the requested one by the user
+            where:{ userId_petId:{ userId: req.user.id, petId: Number(req.body.petId)}} //comparing prismas pet and user ids to the requested one by the user
         });
 
         if(existingPet){ //if its a match well then the pet already exists in your collection
@@ -45,7 +50,7 @@ router.post("/collection", requireAuth, async(req, res) =>{ //name of link follo
             });
         }
         const collectedPet = await prisma.petCollection.create({// now if they didn't match we move on to adding it to the collection, by creating a new record in the pet collection table that
-            data: {userId: Number(req.body.userId), petId: Number(req.body.petId)}, include: {
+            data: {userId: req.user.id, petId: Number(req.body.petId)}, include: {
                 pet: true // includes this information the users id the users pet id and the information regarding the pet
             } //pet: true is what allows for the run down of the pet information
         });
@@ -63,7 +68,7 @@ router.patch("/:petId/select", requireAuth, async (req, res) => {
     try{
         const collectionPet = await prisma.petCollection.findUnique({  //here we are just finding the right pet in pet collection
             where: { // we try to matc the pet with the userId and petId that we have stored compared to the requesters one
-                userId_petId: {userId: Number(req.body.userId), petId: Number(req.params.petId)}
+                userId_petId: {userId: req.user.id, petId: Number(req.params.petId)}
             }
         });
 
@@ -74,7 +79,7 @@ router.patch("/:petId/select", requireAuth, async (req, res) => {
         }
 
         const updatedUser = await prisma.user.update({//here we are actually updating information because a match was sucessfull
-            where:{ id:Number(req.body.userId)}, data: {currentPetId: Number(req.params.petId)} // here we are comparing ids and pet ids to the one that the requester sent
+            where:{ id:req.user.id}, data: {currentPetId: Number(req.params.petId)} // here we are comparing ids and pet ids to the one that the requester sent
         });//where search, data update it to give the proper pet
         res.json({message: "Pet selected", user: updatedUser}); //proper pet given user updatedUser, adds the actual updated user to the response
 
