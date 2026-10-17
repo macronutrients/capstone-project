@@ -30,6 +30,7 @@ function EditHabit({ habit, onSave, onCancel, showNotes = false }) {
       const response = await fetch(`http://localhost:3000/habits/${habit.id}`, {
         method: 'PATCH',
         headers: {
+          // Specifies that the data is in JSON format.
           'Content-Type': 'application/json',
           // Sends the authentication token for user verification.
           Authorization: `Bearer ${token}`,

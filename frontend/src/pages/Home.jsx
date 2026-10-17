@@ -47,8 +47,8 @@ function Home() {
       // Sends a request with the new habit data to the backend.
       const response = await fetch('http://localhost:3000/habits', {
         method: 'POST',
-        // Tells the backend that the data is in JSON format.
         headers: {
+          // Tells the backend that the data is in JSON format.
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, //add an additional instruction for authentication
         },
@@ -138,7 +138,7 @@ function Home() {
       console.error('Error deleting habit:', error)
     }
   }
- 
+
   // Updates the habit list after saving an edit.
   function handleSave(updatedHabit) {
     // Replaces the matching habit with the updated habit.
@@ -224,11 +224,14 @@ function Home() {
                       <span className={habitClass}>{habit.description}</span>
 
                       <div className='habit-actions'>
-                        
+                        <button onClick={() => navigate(`/habits/${habit.id}`)}>
+                          view
+                        </button>
+
                         {!habit.completed && (
                           <button onClick={() => setEditingHabitId(habit.id)}>
                             edit
-                            </button>
+                          </button>
                         )}
                         <button onClick={() => deleteHabit(habit.id)}>
                           delete
@@ -252,13 +255,14 @@ function Home() {
                 {/* Completes the habit when clicked (only when the habit is not being edited). */}
                 {editingHabitId !== habit.id && (
                   <button
-                  className='complete-button'
-                  onClick={() => completeHabit(habit.id)}
+                    className='complete-button'
+                    onClick={() => completeHabit(habit.id)}
+                    disabled={habit.completed}
                   >
                     {completeMark}
-                    </button>
-                  )}
-                  </div>
+                  </button>
+                )}
+              </div>
             )
           })}
         </div>
