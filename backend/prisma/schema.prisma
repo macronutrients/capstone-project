@@ -57,6 +57,9 @@ model User {
   password String
   stars    Int    @default(0)
 
+  streak int @default(0)
+  lastStreakDate DateTime?
+
   habits Habit[] // Habits that were created by this user.
   pets   PetCollection[] // Pets that were unlocked by this user.
 
