@@ -1,17 +1,18 @@
 const express = require("express");// this line just loads the express packaage here and gives it to the variable express
 const router = express.Router(); //create a new router using the express package and store it in the variable router
 
-const {PrismaClient} = require("../generated/prisma"); // were loading whatever is at generated prisma taking Prisma client out then pointing back to it
-const prisma = new PrismaClient(); //now after getting our blueprint above we actually create the object for communication
+
+const {db} = require("../src/prisma/db.ts"); //now after getting our blueprint above we actually create the object for communication
 
 const jsonWebToken = require("jsonwebtoken")//for the digital pass
 
 //checking usernames
 router.post("/register", async(req,res)=>{
-    try{
-        const existinguser = await prisma.user.findUnique({
-            where:{ email: req.body.email}//here we basically just compare emails from the requester and the prisma temp database to see if they match
-        });
+    console.log("REGISTER ROUTE HIT")
+    try{//where prisma function filters to what we have inside of it, and then it gets the first one because of the first function outside of it
+        const existinguser = await db.orm.public.User.where({ email: req.body.email}//here we basically just compare emails from the requester and the prisma temp database to see if they match
+        )
+        .first(); //what allows us to get the first thing in the filter caused by where from the prisma function
 
 if(existinguser){ //if true then the email is already registered
     return res.status(400).json({ //the error message because the email is already registed you can not register another of the same
@@ -19,14 +20,15 @@ if(existinguser){ //if true then the email is already registered
     });
 }
 
-    const newUser = await prisma.user.create({ //if emails were not the same create a new user
-        data:{ email: req.body.email, password: req.body.password} // we do this using data, and update email to the new record
+    const newUser = await db.orm.public.User.create({ //if emails were not the same create a new user
+        email: req.body.email, password: req.body.password // we do this using data, and update email to the new record
     });
     res.status(201).json({//this is where we send back our collection
         message: "User registered", user: newUser //the registration has been succesful and we save this in the record object user for which we have sent back in the json format
     });
 }
 catch(error){ //the erro message if things went south on the prisma json level
+    console.log("REGISTER ERROR:", error); ////error function from javascript itself to actually print more information regarding the error
     res.status(500).json({ message:"unable to register user" //the error code and the error message
     });
 }
@@ -34,9 +36,10 @@ catch(error){ //the erro message if things went south on the prisma json level
 //login basically match username and make sure password is correct
 router.post("/login",async(req,res)=>{ //async wait req res
     try {
-        const user = await prisma.user.findUnique({ //checking for the email match 
-            where: {email: req.body.email} // email match and calling it user
-        });
+        const user = await db.orm.public.User.where({ //checking for the email match 
+            email: req.body.email // email match and calling it user
+        })
+        .first();
         if(!user){ //if no match then say user not found
             return res.status(404).json({ message:"User not found"}); // error code and the message
         }
@@ -55,6 +58,7 @@ router.post("/login",async(req,res)=>{ //async wait req res
 
 }
 catch (error){ //json and prisma are having trouble in the try block
+     console.log("LOGIN ERROR:", error); //error function from javascript itself to actually print more information regarding the error
     res.status(500).json({message:"Unable to login"}); //the error code followed by the error message
 }
 
