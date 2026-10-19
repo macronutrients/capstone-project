@@ -42,6 +42,12 @@ input
     text-align: center;
 }
 
+button
+{
+    border-radius: 50px;
+    background-color: #F25560;
+}
+
 
 
 

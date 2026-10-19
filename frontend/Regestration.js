@@ -13,6 +13,7 @@ let repeated = document.querySelector("#repeated");
 con.addEventListener("click", function()
 {
     //take in values that are to be compared.
+    // let users_name = username.value;
     let first_password = password.value;
     let confirmed = confirm.value;
 
@@ -38,6 +39,9 @@ con.addEventListener("click", function()
     repeated.innerHTML= "Make sure your passwords match ";
    }
 });
+
+
+
 
 
 
