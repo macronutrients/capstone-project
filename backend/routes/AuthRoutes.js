@@ -10,7 +10,7 @@ const jsonWebToken = require("jsonwebtoken")//for the digital pass
 router.post("/register", async(req,res)=>{
     console.log("REGISTER ROUTE HIT")
     try{//where prisma function filters to what we have inside of it, and then it gets the first one because of the first function outside of it
-        const existinguser = await db.orm.public.User.where({ email: req.body.email}//here we basically just compare emails from the requester and the prisma temp database to see if they match
+        const existinguser = await Prisma.User.where({ email: req.body.email}//here we basically just compare emails from the requester and the prisma temp database to see if they match
         )
         .first(); //what allows us to get the first thing in the filter caused by where from the prisma function
 
