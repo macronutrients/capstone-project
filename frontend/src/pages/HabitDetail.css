@@ -1,0 +1,84 @@
+/* Main layout for the Habit Detail page */
+.habit-detail-page {
+  min-height: 100vh; /* Covers the entire screen height. */
+  background-color: #cfd8ff;
+  padding: 50px 40px;
+}
+
+/* Centers the page content horizontally */
+.habit-detail-content {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Page heading and Back button */
+.habit-detail-header {
+  display: flex;
+  gap: 20px; /* Adds space between the Back button and heading. */
+  margin-bottom: 25px;
+}
+
+.habit-detail-header h1 {
+  font-size: 30px;
+  margin: 0; /* Removes the default spacing around the heading. */
+}
+
+.back-button {
+  padding: 10px 18px;
+  background-color: #d2caff;
+  border-radius: 10px; /* Rounds the corners of the button. */
+  font-size: 15px;
+}
+
+/* Main habit card */
+.habit-detail-card {
+  background-color: #e5eafe;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.habit-detail-description {
+  display: flex;
+  justify-content: space-between; /* Places the habit description on the left and Edit button on the right */
+  align-items: center;
+  gap: 20px;
+}
+
+/* Habit completion status */
+.habit-status {
+  background-color: #d2caff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  display: inline-block; /* Keeps the status background around the text. */
+}
+
+/* Notes section */
+.habit-notes {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #b8c4ee;  /* Adds a line to separate the notes from the habit description. */
+}
+
+.notes-content {
+  background-color: #eceffa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.edit-habit-button {
+  background-color: #c1b1ff;
+  padding: 10px 18px;
+  border-radius: 8px;
+}
+
+/* Date when habit was created */
+.habit-created {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #525d82;
+}
+
+/* Notes field when editing */
+.habit-detail-card textarea {
+  min-height: 95px;
+}

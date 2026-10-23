@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
+import './HabitDetail.css'
 
 function HabitDetail() {
   // Gets the habit ID from the URL.
@@ -18,7 +19,7 @@ function HabitDetail() {
 
   // Gets the authentication token.
   const token = localStorage.getItem('token')
-
+  
   // Loads the selected habit.
   useEffect(() => {
     async function getHabit() {
@@ -94,7 +95,7 @@ function HabitDetail() {
           )}
           {!isEditing && (
             <>
-              <div className='habit-detail-title'>
+              <div className='habit-detail-description'>
                 <h2>{habit.description}</h2>
 
                 {!habit.completed && (
