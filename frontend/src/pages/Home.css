@@ -92,6 +92,7 @@
   word-break: break-word; /* Wraps long words to keep them in the card. */
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .complete-button {
@@ -102,6 +103,15 @@
   font-size: 23px;
 }
 
+/* Checkbox button when the habit is completed */
+.complete-button:disabled {
+  color: black;
+  background-color: #e2fada;
+  border: 1px solid gray;
+  border-radius: 3px;
+}
+
+/* Habit description text when it is completed */
 .completed-habit {
   text-decoration: line-through; /* Adds a line through the text of a completed habit. */
   opacity: 0.6; /* Makes the habit look faded. */
@@ -113,6 +123,7 @@
   flex-direction: column;
   gap: 10px;
   flex: 1;
+  margin-top: 9px;
 }
 
 .habit-actions button {
@@ -143,5 +154,13 @@
   border: none;
   background: transparent;
   font-size: 14px;
+  cursor: pointer;
+}
+
+/* Three-dot menu button */
+.habit-menu-button {
+  border: none;
+  background: transparent;
+  font-size: 23px;
   cursor: pointer;
 }

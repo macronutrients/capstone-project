@@ -10,6 +10,8 @@ function Home() {
   const [habits, setHabits] = useState([])
   // Stores the ID of the habit being edited.
   const [editingHabitId, setEditingHabitId] = useState(null)
+  // Stores the ID of the habit with the open menu.
+  const [openMenuId, setOpenMenuId] = useState(null)
 
   // Navigation between pages.
   const navigate = useNavigate()
@@ -156,6 +158,15 @@ function Home() {
     setEditingHabitId(null)
   }
 
+  // Opens or closes the menu for a habit.
+  function toggleMenu(id) {
+    if (openMenuId === id) {
+      setOpenMenuId(null) // Closes the menu if it is already open.
+    } else {
+      setOpenMenuId(id) // Opens the menu for the selected habit.
+    }
+  }
+
   // Loads the habits when the page opens.
   useEffect(() => {
     getHabits()
@@ -217,25 +228,48 @@ function Home() {
             }
             return (
               <div className='habit-card' key={habit.id}>
-                {/* Displays the habit description and action buttons when not editing. */}
+                {/* Shows the three-dot menu button when the habit is not being edited. */}
+                {editingHabitId !== habit.id && (
+                  <button
+                    className='habit-menu-button'
+                    onClick={() => toggleMenu(habit.id)}
+                  >
+                    ⋮
+                  </button>
+                )}
+
                 <div className='habit-info'>
                   {editingHabitId !== habit.id && (
                     <>
                       <span className={habitClass}>{habit.description}</span>
 
                       <div className='habit-actions'>
-                        <button onClick={() => navigate(`/habits/${habit.id}`)}>
-                          view
-                        </button>
+                        {/* Shows the dropdown menu with action buttons for the selected habit. */}
+                        {openMenuId === habit.id && (
+                          <div className='habit-dropdown'>
+                            <button
+                              onClick={() => navigate(`/habits/${habit.id}`)}
+                            >
+                              view
+                            </button>
 
-                        {!habit.completed && (
-                          <button onClick={() => setEditingHabitId(habit.id)}>
-                            edit
-                          </button>
+                            {/* Shows the Edit button only for habits that are not completed. */}
+                            {!habit.completed && (
+                              <button
+                                onClick={() => {
+                                  setEditingHabitId(habit.id)
+                                  setOpenMenuId(null)
+                                }}
+                              >
+                                edit
+                              </button>
+                            )}
+
+                            <button onClick={() => deleteHabit(habit.id)}>
+                              delete
+                            </button>
+                          </div>
                         )}
-                        <button onClick={() => deleteHabit(habit.id)}>
-                          delete
-                        </button>
                       </div>
                     </>
                   )}
