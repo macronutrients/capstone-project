@@ -43,7 +43,7 @@ router.get("/:id", requireAuth, async(req,res) => { //now after this request has
 //this time we are creating a habbit instead of pulling hairs for specifics thanks to our create function
 router.post("/", requireAuth,async (req,res)=>{ //so go into habits looks at the request and send back
     try{
-        const newHabit = await prisma.Habit.create({ //a new habbit we create a new habbit using prisma the database communicator
+        const newHabit = await db.orm.public.Habit.create({ //a new habbit we create a new habbit using prisma the database communicator
             
                 description:req.body.description, notes: req.body.notes, userId: req.user.id //database info
             
@@ -103,9 +103,17 @@ router.patch("/:id/complete", requireAuth, async(req,res)=>{
         const differenceInDays = Math.round((today-lastDate)/(1000*60*60*24)); //calculates the actual change in days between the two dates
         
         if(differenceInDays === 0){ //if no diffference do the below
-
+            newStreak =user.streak; //start the streak 
+        }
+        else if(differenceInDays===1){ //you made it a another day +1
+            newStreak = user.streak+1;
+        }
+        else{//better luck next time, you have been restarted to 1
+            newStreak = 1;
         }
     }
+
+    const updatedUser = await db.orm.public.user.where({id:req.user.id}) //who are we rewarding these streaks too?
 
 }catch(error){
     console.log("Complete Habit Error:", error);
@@ -134,8 +142,8 @@ router.patch("/:id", requireAuth, async(req, res) =>{ //same principle though go
             })
         }
 
-        const updatedHabit = await db.orm.public.Habit. //if we found it continue, and this time we wait to ofcourse get the correct information then we use update to perform the task with
-            where({id:Number(req.params.id)}) // all of these lovely parameters to get the correct information
+        const updatedHabit = await db.orm.public.Habit //if we found it continue, and this time we wait to ofcourse get the correct information then we use update to perform the task with
+            .where({id:Number(req.params.id)}) // all of these lovely parameters to get the correct information
             .update({description:req.body.description, notes:req.body.notes
         });
         res.json({ // now that that job is done now we are sending back the information in ofcourse json format
