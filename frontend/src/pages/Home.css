@@ -94,7 +94,7 @@
   align-items: center;
 }
 
-.habit-card button {
+.complete-button {
   margin-left: auto; /* Pushes the button to the right side of the card. */
   flex-shrink: 0; /* Keeps the button from getting smaller. */
   width: 38px;
@@ -112,6 +112,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1;
 }
 
 .habit-actions button {
@@ -119,6 +120,28 @@
   background: transparent;
   width: auto;
   height: auto;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Edit habit form */
+.edit-habit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-habit input {
+  padding: 8px;
+  background: #eceffa;
+  border: 1px solid #b8c4ee;
+  font-size: 14px;
+}
+
+/* Save and cancel buttons */
+.edit-habit-actions button {
+  border: none;
+  background: transparent;
   font-size: 14px;
   cursor: pointer;
 }

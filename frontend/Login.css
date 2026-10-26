@@ -38,4 +38,13 @@ button
 {
     cursor: alias;
     margin-top: 30px;
+    border-radius: 50px;
+    background-color: #F25560;
+
+}
+
+button:hover
+{
+    background: #dccffe;
+    cursor:alias;
 }
