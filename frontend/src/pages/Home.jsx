@@ -2,6 +2,7 @@ import './Home.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
+import Sidebar from '../components/Sidebar'
 
 function Home() {
   // Stores the habit description typed into the input field.
@@ -10,8 +11,10 @@ function Home() {
   const [habits, setHabits] = useState([])
   // Stores the ID of the habit being edited.
   const [editingHabitId, setEditingHabitId] = useState(null)
+  // Stores the ID of the habit with the open menu.
+  const [openMenuId, setOpenMenuId] = useState(null)
 
-  // Navigation between pages.
+  // Used to navigate to the Habit Detail page.
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
@@ -71,11 +74,6 @@ function Home() {
     } catch (error) {
       console.error('Error creating habit:', error)
     }
-  }
-
-  function logout() {
-    localStorage.removeItem('token') //now we actually get rid of the digital pass then go back to the login page
-    navigate('/') //what sends us back to login
   }
 
   // Marks a habit as completed.
@@ -156,6 +154,15 @@ function Home() {
     setEditingHabitId(null)
   }
 
+  // Opens or closes the menu for a habit.
+  function toggleMenu(id) {
+    if (openMenuId === id) {
+      setOpenMenuId(null) // Closes the menu if it is already open.
+    } else {
+      setOpenMenuId(id) // Opens the menu for the selected habit.
+    }
+  }
+
   // Loads the habits when the page opens.
   useEffect(() => {
     getHabits()
@@ -169,25 +176,7 @@ function Home() {
 
   return (
     <div className='home-page'>
-      <aside className='sidebar'>
-        <div className='sidebar-top'>
-          <button className='nav-button active'>Home</button>
-
-          <button
-            className='nav-button'
-            onClick={() => navigate('/collection')}
-          >
-            Pets
-          </button>
-        </div>
-
-        {/* Returns the user to the login page. */}
-
-        <button className='logout-button' onClick={logout}> {/*now on top of going back to the login page we also remove the digital pass */}
-          LOGOUT
-        </button>
-      </aside>
-
+      <Sidebar />
       <main className='home-content'>
         {/* Section for adding a new habit */}
         <div className='add-habit'>
@@ -217,25 +206,48 @@ function Home() {
             }
             return (
               <div className='habit-card' key={habit.id}>
-                {/* Displays the habit description and action buttons when not editing. */}
+                {/* Shows the three-dot menu button when the habit is not being edited. */}
+                {editingHabitId !== habit.id && (
+                  <button
+                    className='habit-menu-button'
+                    onClick={() => toggleMenu(habit.id)}
+                  >
+                    ⋮
+                  </button>
+                )}
+
                 <div className='habit-info'>
                   {editingHabitId !== habit.id && (
                     <>
                       <span className={habitClass}>{habit.description}</span>
 
                       <div className='habit-actions'>
-                        <button onClick={() => navigate(`/habits/${habit.id}`)}>
-                          view
-                        </button>
+                        {/* Shows the dropdown menu with action buttons for the selected habit. */}
+                        {openMenuId === habit.id && (
+                          <div className='habit-dropdown'>
+                            <button
+                              onClick={() => navigate(`/habits/${habit.id}`)}
+                            >
+                              details
+                            </button>
 
-                        {!habit.completed && (
-                          <button onClick={() => setEditingHabitId(habit.id)}>
-                            edit
-                          </button>
+                            {/* Shows the Edit button only for habits that are not completed. */}
+                            {!habit.completed && (
+                              <button
+                                onClick={() => {
+                                  setEditingHabitId(habit.id)
+                                  setOpenMenuId(null)
+                                }}
+                              >
+                                edit
+                              </button>
+                            )}
+
+                            <button onClick={() => deleteHabit(habit.id)}>
+                              delete
+                            </button>
+                          </div>
                         )}
-                        <button onClick={() => deleteHabit(habit.id)}>
-                          delete
-                        </button>
                       </div>
                     </>
                   )}

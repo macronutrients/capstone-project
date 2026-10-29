@@ -1,5 +1,14 @@
+import './PetCollection.css'
+import Sidebar from '../components/Sidebar'
+
 function PetCollection() {
-  return <h1>PetCollection</h1>
+  return (
+    <div className='pet-collection-page'>
+      <Sidebar />
+
+      <main className='pet-collection-content'></main>
+    </div>
+  )
 }
 
 export default PetCollection
