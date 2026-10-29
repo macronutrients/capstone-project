@@ -5,47 +5,6 @@
   background-color: #cfd8ff;
 }
 
-/* Sidebar navigation */
-.sidebar {
-  width: 220px;
-  background-color: #95a9eb;
-  padding: 40px 20px; /* Adds space inside the sidebar. */
-  display: flex;
-  flex-direction: column; /* Arranges sidebar items vertically. */
-  justify-content: space-between; /* Keeps the top section and logout button separated. */
-}
-
-/* Top section of the sidebar with the navigation buttons */
-.sidebar-top {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Adds space between the buttons. */
-}
-
-/* Navigation and logout buttons */
-.nav-button,
-.logout-button {
-  padding: 15px;
-  border-radius: 10px; /* Rounds the corners of the buttons. */
-  font-size: 15px;
-}
-
-/* Navigation button background */
-.nav-button {
-  background-color: #d2caff;
-}
-
-/* Home button */
-.nav-button.active {
-  background-color: #6f88d8;
-  border: 1px solid #888;
-}
-
-/* Logout button */
-.logout-button {
-  background-color: #e6d3ec;
-}
-
 /* Home page content */
 .home-content {
   flex: 1; /* Makes the main content take up the remaining space next to the sidebar. */

@@ -2,6 +2,7 @@ import './Home.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
+import Sidebar from '../components/Sidebar'
 
 function Home() {
   // Stores the habit description typed into the input field.
@@ -13,7 +14,7 @@ function Home() {
   // Stores the ID of the habit with the open menu.
   const [openMenuId, setOpenMenuId] = useState(null)
 
-  // Navigation between pages.
+  // Used to navigate to the Habit Detail page.
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
@@ -73,11 +74,6 @@ function Home() {
     } catch (error) {
       console.error('Error creating habit:', error)
     }
-  }
-
-  function logout() {
-    localStorage.removeItem('token') //now we actually get rid of the digital pass then go back to the login page
-    navigate('/') //what sends us back to login
   }
 
   // Marks a habit as completed.
@@ -180,25 +176,7 @@ function Home() {
 
   return (
     <div className='home-page'>
-      <aside className='sidebar'>
-        <div className='sidebar-top'>
-          <button className='nav-button active'>Home</button>
-
-          <button
-            className='nav-button'
-            onClick={() => navigate('/collection')}
-          >
-            Pets
-          </button>
-        </div>
-
-        {/* Returns the user to the login page. */}
-
-        <button className='logout-button' onClick={logout}> {/*now on top of going back to the login page we also remove the digital pass */}
-          LOGOUT
-        </button>
-      </aside>
-
+      <Sidebar />
       <main className='home-content'>
         {/* Section for adding a new habit */}
         <div className='add-habit'>
@@ -250,7 +228,7 @@ function Home() {
                             <button
                               onClick={() => navigate(`/habits/${habit.id}`)}
                             >
-                              view
+                              details
                             </button>
 
                             {/* Shows the Edit button only for habits that are not completed. */}
