@@ -2,7 +2,8 @@
 .home-page {
   min-height: 100vh; /* Covers the entire screen height. */
   display: flex;
-  background-color: #cfd8ff;
+  background-image: url('../assets/home-room.png');
+  background-size: cover; /* Makes the background image cover the whole page. */
 }
 
 /* Home page content */
