@@ -113,7 +113,7 @@ router.patch("/:id/complete", requireAuth, async(req,res)=>{
         }
     }
 
-    const updatedUser = await db.orm.public.user.where({id:req.user.id}) //who are we rewarding these streaks too?
+    const updatedUser = await db.orm.public.User.where({id:req.user.id}) //who are we rewarding these streaks too?
 
 }catch(error){
     console.log("Complete Habit Error:", error);
