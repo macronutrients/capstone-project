@@ -124,3 +124,21 @@
   font-size: 23px;
   cursor: pointer;
 }
+
+/* Area for the pet bed */
+.pet-area {
+  position: absolute; /* Positions the pet bed independently of the page content. */
+  right: 0; /* Keeps the pet bed on the right side. */
+  bottom: 55px; /* Moves it up from the bottom. */
+  width: 27%;
+  padding: 20px;
+}
+
+/* Pet bed image */
+.pet-bed {
+  width: 100%;
+  height: auto;
+  display: block; /* Removes extra space below the pet bed. */
+  /* Adds a shadow to the right and below it. */
+  filter: drop-shadow(18px 10px 10px rgba(35, 20, 30, 0.75));
+}

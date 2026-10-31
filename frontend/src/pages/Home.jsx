@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
 import Sidebar from '../components/Sidebar'
+import petBed from '../assets/pet-bed.png'
 
 function Home() {
   // Stores the habit description typed into the input field.
@@ -279,6 +280,10 @@ function Home() {
           })}
         </div>
       </main>
+      {/* Displays the pet bed on the page. */}
+      <div className="pet-area">
+      <img src={petBed} alt="Pet bed" className="pet-bed" />
+      </div>
     </div>
   )
 }
