@@ -1,0 +1,56 @@
+/* Sidebar navigation */
+.sidebar {
+  width: 220px;
+  background-color: #95a9eb;
+  padding: 40px 20px; /* Adds space inside the sidebar. */
+  display: flex;
+  flex-direction: column; /* Arranges sidebar items vertically. */
+  justify-content: space-between; /* Keeps the top section and logout button separated. */
+}
+
+/* Button for opening and closing the sidebar. */
+.sidebar-toggle {
+  background: transparent;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  align-self: flex-end; /* Moves the button to the right side of the sidebar. */
+  margin-top: -25px; /* Moves the button up. */
+}
+
+/* Positions the button used to open the sidebar. */
+.sidebar-toggle.open-sidebar {
+  align-self: flex-start;
+  margin: 20px;
+}
+
+/* Top section of the sidebar with the navigation buttons */
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds space between the buttons. */
+}
+
+/* Navigation and logout buttons */
+.nav-button,
+.logout-button {
+  padding: 15px;
+  border-radius: 10px; /* Rounds the corners of the buttons. */
+  font-size: 15px;
+}
+
+/* Sets the background color of navigation buttons. */
+.nav-button {
+  background-color: #d2caff;
+}
+
+.logout-button {
+  background-color: #e6d3ec;
+}
+
+/* Shows which page is currently open (makes the button darker) */
+.nav-button:disabled {
+  color: black;
+  background-color: #6f88d8;
+  border: 1px solid #888;
+}

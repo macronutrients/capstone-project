@@ -1,0 +1,15 @@
+/* Main layout for the Pet Collection page */
+.pet-collection-page {
+  min-height: 100vh; /* Covers the entire screen height. */
+  display: flex;
+  background-color: #cfd8ff;
+}
+
+/* Pet Collection page content */
+.pet-collection-content {
+  flex: 1;
+  padding: 120px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
