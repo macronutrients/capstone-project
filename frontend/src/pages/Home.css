@@ -4,13 +4,17 @@
   display: flex;
   background-image: url('../assets/home-room.png');
   background-size: cover; /* Makes the background image cover the whole page. */
+  background-position: center;
+  background-attachment: fixed; /* Keeps the background image in place when scrolling. */
 }
 
 /* Home page content */
 .home-content {
-  flex: 1; /* Makes the main content take up the remaining space next to the sidebar. */
+  margin-left: 220px; /* Leaves room for the sidebar so it does not overlap the content. */
+  margin-right: 200px; /* Adds space on the right to move the content left. */
   padding: 120px 40px;
   display: flex;
+  flex: 1; /* Allows the content to fill the remaining space. */
   flex-direction: column;
   align-items: center;
 }
@@ -24,11 +28,14 @@
 .add-habit {
   display: flex;
   gap: 10px;
+  width: 100%;
+  max-width: 500px; /* Prevents the section from becoming too wide. */
 }
 
 .add-habit input {
   padding: 15px;
-  width: 400px;
+  flex: 1;
+  min-width: 0;
 }
 
 .add-habit button {
@@ -127,8 +134,8 @@
 
 /* Area for the pet bed */
 .pet-area {
-  position: absolute; /* Positions the pet bed independently of the page content. */
-  right: 0; /* Keeps the pet bed on the right side. */
+  position: fixed; /* Makes the pet bed stay in place when scrolling. */
+  right: 0; /* Keeps it on the right side. */
   bottom: 55px; /* Moves it up from the bottom. */
   width: 27%;
   padding: 20px;

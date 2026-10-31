@@ -1,7 +1,12 @@
 /* Sidebar navigation */
 .sidebar {
-  width: 220px;
+  position: fixed; /* Keeps the sidebar in place when scrolling. */
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh; /* Makes the sidebar cover the full screen height. */
   padding: 40px 20px; /* Adds space inside the sidebar. */
+  box-sizing: border-box; /* Includes padding in the sidebar's size so it does not become larger than intended. */
   display: flex;
   flex-direction: column; /* Arranges sidebar items vertically. */
   justify-content: space-between; /* Keeps the top section and logout button separated. */
@@ -21,8 +26,10 @@
 
 /* Positions the button used to open the sidebar. */
 .sidebar-toggle.open-sidebar {
-  align-self: flex-start;
-  margin: 20px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  margin: 0;
 }
 
 /* Top section of the sidebar with the navigation buttons */
