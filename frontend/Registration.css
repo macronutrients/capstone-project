@@ -18,8 +18,8 @@ body
 }
 #con:hover
 {
-    background: #dccffe;
-    cursor:alias;
+    filter: invert();
+    cursor: grabbing;
 }
 
 input
@@ -48,10 +48,16 @@ input
 
 button
 {
-    border-radius: 50px;
+    border-radius: 100px;
+    padding: 50px;
     background-color: #F25560;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdHmAAPsAGVicVnDJtW9Jic1zRNQLt1vpv-jMRt8_osQ&s=10");
+    font-size: x-large;
+    color: #F25560;
+    background-size:contain;
+    
+    
 }
-
 canvas
 {
     position: fixed;
@@ -62,8 +68,6 @@ canvas
     z-index: -1;
     color: blue;
 }
-
-
 
 
 
