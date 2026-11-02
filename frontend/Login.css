@@ -11,6 +11,7 @@ div
     width: 500px;
     margin-top: 30px;
     border-radius: 5px;
+   
 }
 
 input
@@ -18,8 +19,7 @@ input
     font-size: larger;
     color: #0000FF;
     text-align: center;
-    margin-left: 150px;
-    margin-top: 50px;
+    
 }
 
 h1
@@ -29,10 +29,12 @@ h1
 #login
 {
     margin-left: 200px;
+    background-image: url("https://i0.wp.com/digitaldrawingideas.com/wp-content/uploads/2025/07/how-to-draw-a-cow-cute-cow-drawing-15.jpg?fit=1024%2C1024&ssl=1");
 }
 #sign_up
 {
-    margin-left: 10px;
+    margin-left: 200px;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQllutfmOfLA0HWYyrASwIdYCnEmZ-Wa0twoEVLL9g1tc2VDwMWkJaE5ce&s=10");
 }
 button
 {
@@ -40,11 +42,17 @@ button
     margin-top: 30px;
     border-radius: 50px;
     background-color: #F25560;
-
+    padding: 50px;
+    background-size:contain;
+    color: #F25560;
+    font-size: x-large;
+    
 }
 
 button:hover
 {
-    background: #dccffe;
-    cursor:alias;
+    filter: invert();
+    cursor:grabbing;
 }
+
+
