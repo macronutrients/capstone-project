@@ -1,16 +1,23 @@
 import './Home.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import confetti from 'canvas-confetti' //for confetti effect
 import EditHabit from '../components/EditHabit'
 import Sidebar from '../components/Sidebar'
+import streakFire from '../assets/streak-fire.png' //the image that Im using for the streak symbol
 
 function Home() {
+  //this is where we show if the flash message is visible or not
+  const [showWelcomeEffect, setShowWelcomeEffect] = useState(true)
   // Stores the habit description typed into the input field.
   const [habitDescription, setHabitDescription] = useState('')
   // Stores the list of habits.
   const [habits, setHabits] = useState([])
   // Stores the ID of the habit being edited.
   const [editingHabitId, setEditingHabitId] = useState(null)
+
+  const [streak, setStreak] = useState(0)
+
   // Stores the ID of the habit with the open menu.
   const [openMenuId, setOpenMenuId] = useState(null)
 
@@ -19,7 +26,25 @@ function Home() {
 
   const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
 
-  // Retrieves all habits from the backend.
+  // fixes the issue of starting with streak 0 when not touching the habits yet, 
+  async function getUser(){
+    try { //literal copy and paste of get habit with minor changes
+      // Sends a request to get the habit list.
+      const response = await fetch('http://localhost:3000/auth/me', { //fetching a different address auth/me now
+        headers: { Authorization: `Bearer ${token}` }, //what our backend code expects to see in the authorization process
+      })
+      const data = await response.json()
+
+      if (!response.ok) { //if response failed backend could not proceed with the request
+        console.error(data.message) //the error message
+        return
+      }
+      // Stores the retrieved streak in the data.streak react state.
+      setStreak(data.streak) //takes the streak from the backend and updates react state
+    } catch (error) {
+      console.error('Error loading habits:', error)
+    }
+  }
   async function getHabits() {
     try {
       // Sends a request to get the habit list.
@@ -106,6 +131,7 @@ function Home() {
           return habit
         }),
       )
+      setStreak(data.user.streak)
     } catch (error) {
       console.error('Error completing habit:', error)
     }
@@ -166,6 +192,34 @@ function Home() {
   // Loads the habits when the page opens.
   useEffect(() => {
     getHabits()
+    getUser() //the new function that we created to deal with the streaks updating when loading the page
+  
+
+
+  //skipping if option selected
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    setShowWelcomeEffect(false)
+    return
+  }
+
+  //launching the confetti as the white overlay starts revealing the page.
+  const confettiTimer = setTimeout(()=>{
+    confetti({
+      particleCount: 150, spread: 100, origin: {y:0.6}, zIndex: 10000, disableForReducedMotion: true,
+
+    })
+  }, 250)
+
+  //get rid of the overlay when done
+  const flashTimer =setTimeout(()=> {
+    setShowWelcomeEffect(false)
+  }, 800)
+
+  return () =>{
+    clearTimeout(confettiTimer)
+    clearTimeout(flashTimer)
+
+  }
   }, [])
 
   let habitMessage = ''
@@ -175,7 +229,10 @@ function Home() {
   }
 
   return (
-    <div className='home-page'>
+    <div className='home-page'>{/*show the effect before anything else*/}
+      {showWelcomeEffect && (
+        <div className='welcome-flash' aria-hidden='true'/>
+      )}
       <Sidebar />
       <main className='home-content'>
         {/* Section for adding a new habit */}
@@ -190,6 +247,8 @@ function Home() {
           <button onClick={addHabit}>Add</button>
         </div>
 
+        <h2 className='streak-display'><img src={streakFire} alt ='Streak fire' /> 
+        {streak} days</h2>
         <h2>My Habits</h2>
         <p>{habitMessage}</p>
 

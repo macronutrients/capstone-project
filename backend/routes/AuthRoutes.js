@@ -3,7 +3,7 @@ const router = express.Router(); //create a new router using the express package
 
 
 const {db} = require("../src/prisma/db.ts"); //now after getting our blueprint above we actually create the object for communication
-
+const {requireAuth} = require("../middleware/authentiMiddware.js") 
 const jsonWebToken = require("jsonwebtoken")//for the digital pass
 
 //checking usernames
@@ -63,5 +63,7 @@ catch (error){ //json and prisma are having trouble in the try block
 }
 
 });
-
+router.get("/me",requireAuth, async(req,res)=>{
+    res.json(req.user);
+});
 module.exports = router; //extract the router information that we tagged on to the router throughout the file
