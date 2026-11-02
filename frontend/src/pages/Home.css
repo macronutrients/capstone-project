@@ -123,3 +123,35 @@
   font-size: 23px;
   cursor: pointer;
 }
+
+/*the white overlay*/ 
+.welcome-flash{
+  position: fixed;
+  inset:0;
+  background-color:white;
+  z-index: 9999;
+  pointer-events: none;
+  animation: welcome-fade 800ms ease-out forwards;
+}
+
+@keyframes welcome-fade{
+  from{
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/*skips the flash for people who need it off*/
+@media (prefers-reduced-motion: reduce){
+  .welcome-flash{
+    display: none; 
+  }
+}
+
+.streak-display img { 
+  width:8px;
+  height: 8px;
+  object-fit: contain;
+}
