@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import confetti from 'canvas-confetti' //for confetti effect
 import EditHabit from '../components/EditHabit'
 import Sidebar from '../components/Sidebar'
+import petBed from '../assets/pet-bed.png'
 import streakFire from '../assets/streak-fire.png' //the image that Im using for the streak symbol
 
 function Home() {
@@ -221,6 +222,39 @@ function Home() {
 
   }
   }, [])
+  
+  // Hides habit cards when they start to look cut off while scrolling.
+  useEffect(() => {
+    // Gets the Home content container.
+    const container = document.querySelector('.home-content')
+    
+    // An observer to check if habit cards are visible.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Hides the card when less than 99% of it is visible.
+          if (entry.intersectionRatio < 0.99) {
+            entry.target.classList.add('hidden-card')
+          } else {
+            // Shows the card when it becomes visible again.
+            entry.target.classList.remove('hidden-card')
+          }
+        })
+      },
+      {
+        root: container, // Checks if cards are visible inside the Home content.
+        threshold: [0.99], // Runs the callback when the card goes above or below 99% visibility.
+      },
+    )
+    // Finds all habit cards.
+    const cards = container.querySelectorAll('.habit-card')
+    // Watches each card for visibility changes.
+    cards.forEach((card) => {
+      observer.observe(card)
+    })
+    // Stops watching the cards if habits change or the user leaves the Home page.
+    return () => observer.disconnect()
+  }, [habits]) // Runs again when the habit list changes.
 
   let habitMessage = ''
 
@@ -338,6 +372,10 @@ function Home() {
           })}
         </div>
       </main>
+      {/* Displays the pet bed on the page. */}
+      <div className='pet-area'>
+        <img src={petBed} alt='Pet bed' className='pet-bed' />
+      </div>
     </div>
   )
 }
