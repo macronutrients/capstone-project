@@ -166,3 +166,35 @@
   /* Adds a shadow to the right and below it. */
   filter: drop-shadow(18px 10px 10px rgba(35, 20, 30, 0.75));
 }
+
+/*the white overlay*/ 
+.welcome-flash{
+  position: fixed;
+  inset:0;
+  background-color:white;
+  z-index: 9999;
+  pointer-events: none;
+  animation: welcome-fade 800ms ease-out forwards;
+}
+
+@keyframes welcome-fade{
+  from{
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/*skips the flash for people who need it off*/
+@media (prefers-reduced-motion: reduce){
+  .welcome-flash{
+    display: none; 
+  }
+}
+
+.streak-display img { 
+  width:8px;
+  height: 8px;
+  object-fit: contain;
+}

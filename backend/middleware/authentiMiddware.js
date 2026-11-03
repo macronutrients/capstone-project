@@ -1,7 +1,7 @@
-const {PrismaClient} = require("../generated/prisma");//this line just loads the prisma code from our local file but prisma itself isn't our creation entirely
+;//this line just loads the prisma code from our local file but prisma itself isn't our creation entirely
 const jsonWebToken = require("jsonwebtoken"); //loads jsonwebtoken from an external package that we have downloaded earlier
 
-const prisma = new PrismaClient(); //now that we have loaded the prismaclient we store it somewhere for later use in this case we store it in prisma
+const {db} = require("../src/prisma/db.ts"); //now that we have loaded the prismaclient we store it somewhere for later use in this case we store it in prisma
 
 const requireAuth = async (req, res, next)=> { //our large function with multiple checks for verification purposes and this is why we have next to continue to the next function
     try{
@@ -38,14 +38,12 @@ const requireAuth = async (req, res, next)=> { //our large function with multipl
         });
     }
 
-    const user = await prisma.user.findUnique({//go into the users stuff using prisma and find these specific values
-        where: {
+    const user = await db.orm.public.User.where({//go into the users stuff using prisma and find these specific values
+         
             id: Number(decoded.userId)//comparing id to the number(decoded.userid)we just got looking for a match
-        },
-        select:{ //select just goes into the fields below and returns their values
-            id: true, email: true, stars: true, currentPetId: true
-        }
-    });
+        }, //select just goes into the fields below and returns their values
+            
+    ) .first();
 
     if(!user){//checks if their was a match or not if their wasn't a match then error 
         return res.status(401).json({ //the actual error code
