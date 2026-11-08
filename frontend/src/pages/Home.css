@@ -108,6 +108,8 @@
   gap: 10px;
   flex: 1;
   margin-top: 9px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 .habit-actions button {
@@ -197,4 +199,18 @@
   width:8px;
   height: 8px;
   object-fit: contain;
+}
+
+/* Icons for habit cards */
+.habit-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.habit-icon-background {
+  background-color: #d5c3f7;
+  border-radius: 12px;
+  flex-shrink: 0;
 }

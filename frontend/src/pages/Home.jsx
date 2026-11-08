@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import confetti from 'canvas-confetti' //for confetti effect
 import EditHabit from '../components/EditHabit'
 import Sidebar from '../components/Sidebar'
+import HabitIcon from '../components/HabitIcon'
 import petBed from '../assets/pet-bed.png'
 import streakFire from '../assets/streak-fire.png' //the image that Im using for the streak symbol
 
@@ -308,6 +309,8 @@ function Home() {
                     ⋮
                   </button>
                 )}
+                
+                <HabitIcon description={habit.description} />
 
                 <div className='habit-info'>
                   {editingHabitId !== habit.id && (
