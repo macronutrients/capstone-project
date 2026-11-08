@@ -1,17 +1,35 @@
 /* Main layout for the home page */
 .home-page {
-  min-height: 100vh; /* Covers the entire screen height. */
+  height: 100vh; /* Covers the entire screen height. */
   display: flex;
-  background-color: #cfd8ff;
+  background-image: url('../assets/home-room.png');
+  background-size: cover; /* Makes the image cover the whole page. */
+  background-position: center;
 }
 
 /* Home page content */
 .home-content {
-  flex: 1; /* Makes the main content take up the remaining space next to the sidebar. */
+  /* Makes the content fade out at the top and bottom of the scrollable area. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%, /* Makes the top invisible. */
+    black 10%, /* Fade in effect ends here. */
+    black 90%, /* Starts the fade out effect. */
+    transparent 100% /* Makes the bottom invisible. */
+  );
+  height: calc(100dvh - 50px); /* Creates space at the bottom of the screen. */
+  min-width: 0;
+  margin-left: 220px; /* Leaves room for the sidebar so it does not overlap the content. */
+  margin-right: 200px; /* Adds space on the right to move the content left. */
   padding: 120px 40px;
+  box-sizing: border-box; /* Includes padding in the content's height so it does not become larger than intended. */
   display: flex;
+  flex: 1; /* Fills the remaining space. */
   flex-direction: column;
   align-items: center;
+  align-self: flex-start; /* Aligns the content container to the top of the page. */
+  overflow-y: auto; /* Allows the content to scroll. */
+  scrollbar-width: none; /* Hides the scrollbar. */
 }
 
 /* Adds space above the "My Habits" heading */
@@ -23,11 +41,14 @@
 .add-habit {
   display: flex;
   gap: 10px;
+  width: 100%;
+  max-width: 500px; /* Prevents the section from becoming too wide. */
 }
 
 .add-habit input {
   padding: 15px;
-  width: 400px;
+  flex: 1;
+  min-width: 0;
 }
 
 .add-habit button {
@@ -39,7 +60,6 @@
 .habit-list {
   width: 100%;
   max-width: 500px;
-  margin-top: 20px;
 }
 
 /* Individual habit card */
@@ -52,6 +72,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  transition: opacity 0.15s ease; /* Makes the cards appear and disappear smoothly. */
+}
+
+.habit-card.hidden-card {
+  opacity: 0;
 }
 
 .complete-button {
@@ -122,6 +147,24 @@
   background: transparent;
   font-size: 23px;
   cursor: pointer;
+}
+
+/* Area for the pet bed */
+.pet-area {
+  position: fixed; /* Makes the pet bed stay in place when scrolling. */
+  right: 0; /* Keeps it on the right side. */
+  bottom: 55px; /* Moves it up from the bottom. */
+  width: 27%;
+  padding: 20px;
+}
+
+/* Pet bed image */
+.pet-bed {
+  width: 100%;
+  height: auto;
+  display: block; /* Removes extra space below the pet bed. */
+  /* Adds a shadow to the right and below it. */
+  filter: drop-shadow(18px 10px 10px rgba(35, 20, 30, 0.75));
 }
 
 /*the white overlay*/ 
