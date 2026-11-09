@@ -112,7 +112,7 @@ router.patch("/:id/complete", requireAuth, async(req,res)=>{
             newStreak = 1;
         }
     }
-//checks this section !
+//
     const updatedUser = await db.orm.public.User.where({id:req.user.id}) //who are we rewarding these streaks too?
     .update({ //casual method that updates/replaces stars streak and lastStreakDate by whatever is on the right with what was on the left  method goes through the .where(object(whatever this object is))
         stars:user.stars +1, //this line rewards the user /
