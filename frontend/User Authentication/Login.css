@@ -1,6 +1,6 @@
 body
 {
-    background: #cbcffe;
+    background-image: url("closehouse.jpeg");
 }
 
 div
@@ -30,11 +30,14 @@ h1
 {
     margin-left: 200px;
     background-image: url("https://i0.wp.com/digitaldrawingideas.com/wp-content/uploads/2025/07/how-to-draw-a-cow-cute-cow-drawing-15.jpg?fit=1024%2C1024&ssl=1");
+    
 }
 #sign_up
 {
     margin-left: 200px;
     background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQllutfmOfLA0HWYyrASwIdYCnEmZ-Wa0twoEVLL9g1tc2VDwMWkJaE5ce&s=10");
+    
+
 }
 button
 {
