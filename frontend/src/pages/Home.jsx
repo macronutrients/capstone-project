@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import confetti from 'canvas-confetti' //for confetti effect
 import EditHabit from '../components/EditHabit'
 import Sidebar from '../components/Sidebar'
+import petBed from '../assets/pet-bed.png'
 import streakFire from '../assets/streak-fire.png' //the image that Im using for the streak symbol
 
 function Home() {
@@ -25,7 +26,7 @@ function Home() {
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
-
+  const [currentPet, setCurrentPet] = useState(null)
   // fixes the issue of starting with streak 0 when not touching the habits yet, 
   async function getUser(){
     try { //literal copy and paste of get habit with minor changes
@@ -41,6 +42,22 @@ function Home() {
       }
       // Stores the retrieved streak in the data.streak react state.
       setStreak(data.streak) //takes the streak from the backend and updates react state
+
+
+      const collectionResponse = await fetch(`http://localhost:3000/pets/collection/${data.id}`, {
+        headers:{Authorization: `Bearer ${token}`},
+      }, )
+      if(!collectionResponse.ok){
+        setCurrentPet(null)
+        console.error("unable to load the pet collection")
+        return
+      }
+      const collection = await collectionResponse.json()
+      const selectedEntry = collection.find((entry)=> entry.petId ===data.currentPetId,)
+
+      
+      setCurrentPet(selectedEntry?.pet ?? null)
+
     } catch (error) {
       console.error('Error loading habits:', error)
     }
@@ -191,9 +208,10 @@ function Home() {
 
   // Loads the habits when the page opens.
   useEffect(() => {
+    if(token){
     getHabits()
     getUser() //the new function that we created to deal with the streaks updating when loading the page
-  
+    }
 
 
   //skipping if option selected
@@ -221,6 +239,39 @@ function Home() {
 
   }
   }, [])
+  
+  // Hides habit cards when they start to look cut off while scrolling.
+  useEffect(() => {
+    // Gets the Home content container.
+    const container = document.querySelector('.home-content')
+    
+    // An observer to check if habit cards are visible.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Hides the card when less than 99% of it is visible.
+          if (entry.intersectionRatio < 0.99) {
+            entry.target.classList.add('hidden-card')
+          } else {
+            // Shows the card when it becomes visible again.
+            entry.target.classList.remove('hidden-card')
+          }
+        })
+      },
+      {
+        root: container, // Checks if cards are visible inside the Home content.
+        threshold: [0.99], // Runs the callback when the card goes above or below 99% visibility.
+      },
+    )
+    // Finds all habit cards.
+    const cards = container.querySelectorAll('.habit-card')
+    // Watches each card for visibility changes.
+    cards.forEach((card) => {
+      observer.observe(card)
+    })
+    // Stops watching the cards if habits change or the user leaves the Home page.
+    return () => observer.disconnect()
+  }, [habits]) // Runs again when the habit list changes.
 
   let habitMessage = ''
 
@@ -247,8 +298,7 @@ function Home() {
           <button onClick={addHabit}>Add</button>
         </div>
 
-        <h2 className='streak-display'><img src={streakFire} alt ='Streak fire' /> 
-        {streak} days</h2>
+        
         <h2>My Habits</h2>
         <p>{habitMessage}</p>
 
@@ -338,6 +388,21 @@ function Home() {
           })}
         </div>
       </main>
+      {/* Displays the pet bed on the page. */}
+      <div className='pet-area'>
+        <img src={petBed} alt='Pet bed' className='pet-bed' />
+        <div className="pet-with-streak">
+         <img 
+        src={currentPet?.imageUrl || "/images/pets/Nitro.png"}
+      alt = {currentPet?.name ? currentPet.name || "Selected pet" : "Starter pet rock"}
+    className="pet-on-bed"/>
+    <div className = "streak-display">
+      <img src={streakFire} alt='' />
+      <span>{streak} {streak ===1 ? 'day' : 'days'}</span>
+    </div>
+    </div>
+    <img src={petBed} alt ="" className="pet-bed-rim"/>
+      </div>
     </div>
   )
 }
