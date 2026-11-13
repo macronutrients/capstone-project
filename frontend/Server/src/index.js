@@ -5,13 +5,20 @@ require("dotenv").config();
 const app= express();
 
 app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "http://127.0.0.0.1:5173"
-    ]
+    origin: /^http:\/\/(localhost|127\.0\.0\.1):\d+$/,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
+
+app.post("/auth/login",async(req, res)=> {
+    console.log("Login request received");
+
+    res.status(501)
+    .json({
+        error: "Login endpoint reached, but authentication is not implementated yet"});
+});
 
 app.get("/", (req, res)=>{
     res.send("Hunter Habit Tracker API is running!");

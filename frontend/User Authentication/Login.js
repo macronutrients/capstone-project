@@ -41,12 +41,6 @@ login.addEventListener("click", async function()
             window.location.href="?/page=dashboard";
         
 
-        if(data.token)
-
-            {
-                sessionStorage.setItem("token", data.token);
-            }
-
             //Redirect after successful login 
             window.location.href= "/?page=dashboard";
             console.log("http status:", response.status);
