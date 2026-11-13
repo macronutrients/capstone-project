@@ -169,6 +169,65 @@
   filter: drop-shadow(18px 10px 10px rgba(35, 20, 30, 0.75));
 }
 
+/* Icons for habit cards */
+.habit-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.habit-icon-background {
+  background-color: #d5c3f7;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+/*streaks*/
+.pet-with-streak{
+  position: absolute;
+  left: 50%;
+  bottom: 25%;
+  transform: translateX(-50%);
+  width: 55%;
+}
+
+/*the rock*/
+.pet-on-bed{
+  display:block;
+  width: 100%;
+  height: auto;
+}
+
+.streak-display{
+  position: absolute;
+  top:0;
+  right:0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.streak-display img{
+width:16px;
+height: 16px;
+object-fit: contain;
+}
+/*helps the pet look like its actually inside*/
+.pet-bed-rim{
+  position:absolute;
+  left:20px;
+  bottom:20px;
+  width: calc(100% - 40px);
+  height: auto;
+  pointer-events:none;
+  clip-path: polygon(0 50%, 15% 56%, 30% 61%, 50% 64%, 70% 61%, 85% 56%, 100% 50%, 100% 100%, 0 100%);
+}
+
+
 /*the white overlay*/ 
 .welcome-flash{
   position: fixed;
@@ -193,24 +252,4 @@
   .welcome-flash{
     display: none; 
   }
-}
-
-.streak-display img { 
-  width:8px;
-  height: 8px;
-  object-fit: contain;
-}
-
-/* Icons for habit cards */
-.habit-icon {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  display: block;
-}
-
-.habit-icon-background {
-  background-color: #d5c3f7;
-  border-radius: 12px;
-  flex-shrink: 0;
 }
