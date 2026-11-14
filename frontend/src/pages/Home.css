@@ -108,6 +108,8 @@
   gap: 10px;
   flex: 1;
   margin-top: 9px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 .habit-actions button {
@@ -165,6 +167,20 @@
   display: block; /* Removes extra space below the pet bed. */
   /* Adds a shadow to the right and below it. */
   filter: drop-shadow(18px 10px 10px rgba(35, 20, 30, 0.75));
+}
+
+/* Icons for habit cards */
+.habit-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.habit-icon-background {
+  background-color: #d5c3f7;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
 
 /*streaks*/

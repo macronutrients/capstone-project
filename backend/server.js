@@ -7,6 +7,8 @@ const habitRoutes = require("./routes/habitRoutes"); //here we are loading the l
 const authRoutes = require("./routes/AuthRoutes");//Now we move on to the next java file and load it AuthRoutes
 const petRoutes = require("./routes/petRoutes");//Moving on to loading the petRoutes file
 const rewardRoutes = require("./routes/rewardRoutes"); // followed by the rewardRoutes file
+const iconRoutes = require("./routes/iconRoutes")
+
 const cors = require("cors"); //now were back to the external packages, and this is what helps us get a different backend and frontend server link
  
 const app = express(); //here we store the express application object in the variable or the const variable called app
@@ -23,6 +25,7 @@ app.use("/habits", habitRoutes);  // for this route if in habits then give the r
 app.use("/pets", petRoutes); // this is the same thing but now were dealing with the petRoutes file
 app.use("/auth", authRoutes); //Now this is still similar to the others looking for the auth type of request if were looking at the more consistent repeated checks we would have to go to authMiddleware.js for that
 app.use("/rewards", rewardRoutes); //also along the same path when a request is made to this file then it handles its section of work this case pet routes
+app.use("/icons", iconRoutes) // Handles requests for searching habit icons.
 
 app.listen(PORT,()=>{ //this is what brings the server alive here the app actually starts paying attention for incoming request it opens the server for action the res doesn't send back until this function opens up shop
 
