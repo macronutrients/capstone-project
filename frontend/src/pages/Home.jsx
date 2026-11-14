@@ -1,6 +1,8 @@
 import './Home.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'motion/react'
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import confetti from 'canvas-confetti' //for confetti effect
 import EditHabit from '../components/EditHabit'
 import Sidebar from '../components/Sidebar'
@@ -111,7 +113,7 @@ function Home() {
       }
 
       // Adds the newly created habit to the existing list.
-      setHabits((prevHabits) => [...prevHabits, newHabit])
+      setHabits((prevHabits) => [newHabit, ...prevHabits])
       // Empties the input field.
       setHabitDescription('')
     } catch (error) {
@@ -280,6 +282,11 @@ function Home() {
     habitMessage = 'There are no habits to display.'
   }
 
+  // Moves completed habits to the bottom of the list.
+  const sortedHabits = [...habits].sort((a, b) => {
+    return Number(a.completed) - Number(b.completed)
+  })
+
   return (
     <div className='home-page'>{/*show the effect before anything else*/}
       {showWelcomeEffect && (
@@ -305,17 +312,35 @@ function Home() {
 
         <div className='habit-list'>
           {/* Creates a card for each habit. */}
-          {habits.map((habit) => {
+          {sortedHabits.map((habit) => {
             let completeMark = ''
             let habitClass = ''
+            let backgroundColor = '#f3ebfd'
 
             // Adds a checkmark and crosses out the text for a completed habit.
             if (habit.completed) {
               completeMark = '✔️'
               habitClass = 'completed-habit'
+              backgroundColor = '#d4fadb'
             }
             return (
-              <div className='habit-card' key={habit.id}>
+            <motion.div
+              layout='position'
+              className='habit-card'
+              key={habit.id}
+              animate={{
+                backgroundColor
+              }}
+              transition={{
+                layout: {
+                  duration: 0.7,
+                  ease: 'easeInOut'
+                },
+                backgroundColor: {
+                  duration: 0.4
+                }
+              }}
+              >
                 {/* Shows the three-dot menu button when the habit is not being edited. */}
                 {editingHabitId !== habit.id && (
                   <button
@@ -340,7 +365,7 @@ function Home() {
                             <button
                               onClick={() => navigate(`/habits/${habit.id}`)}
                             >
-                              details
+                              <Eye size={16} /> details
                             </button>
 
                             {/* Shows the Edit button only for habits that are not completed. */}
@@ -351,12 +376,12 @@ function Home() {
                                   setOpenMenuId(null)
                                 }}
                               >
-                                edit
+                                <Pencil size={16} /> edit
                               </button>
                             )}
 
                             <button onClick={() => deleteHabit(habit.id)}>
-                              delete
+                              <Trash2 size={16} /> delete
                             </button>
                           </div>
                         )}
@@ -386,7 +411,7 @@ function Home() {
                     {completeMark}
                   </button>
                 )}
-              </div>
+              </motion.div>
             )
           })}
         </div>

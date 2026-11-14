@@ -90,8 +90,8 @@
 /* Checkbox button when the habit is completed */
 .complete-button:disabled {
   color: black;
-  background-color: #e2fada;
-  border: 1px solid gray;
+  background-color: #dcd5fb;
+  border: 1px solid #ad87c3;
   border-radius: 3px;
 }
 
@@ -110,15 +110,6 @@
   margin-top: 9px;
   margin-left: 12px;
   margin-right: 12px;
-}
-
-.habit-actions button {
-  border: none;
-  background: transparent;
-  width: auto;
-  height: auto;
-  font-size: 14px;
-  cursor: pointer;
 }
 
 /* Edit habit form */
@@ -149,6 +140,41 @@
   background: transparent;
   font-size: 23px;
   cursor: pointer;
+}
+
+/* Dropdown menu */
+.habit-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* All action buttons inside the menu */
+.habit-dropdown button {
+  border: none;
+  background: transparent;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Details button */
+.habit-dropdown button:first-child {
+  color: #a43093;
+}
+
+/* Edit button */
+.habit-dropdown button:nth-child(2) {
+  color: #324ccb;
+}
+
+/* Delete button */
+.habit-dropdown button:last-child {
+  color: #c4545f;
 }
 
 /* Area for the pet bed */
