@@ -15,7 +15,7 @@ app.use(express.json());
 app.post("/auth/login",async(req, res)=> {
     console.log("Login request received");
 
-    res.status(501)
+    res.status(500)
     .json({
         error: "Login endpoint reached, but authentication is not implementated yet"});
 });
