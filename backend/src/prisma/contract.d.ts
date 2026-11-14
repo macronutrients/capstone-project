@@ -21,7 +21,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'c16c2fbe768bc57b97902284060507eb5e29b132b5bbed20875a809334cb752a'>;
+  StorageHashBase<'2f615da72cc3d5bf4f17e22a875b35500d68675b95d49dfac05a3fb4a4ff6397'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -261,8 +261,10 @@ export type FieldOutputTypes = {
       readonly currentPetId: CodecTypes['pg/int4@1']['output'] | null;
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly lastStreakDate: TimestampString<3> | null;
       readonly password: CodecTypes['pg/text@1']['output'];
       readonly stars: CodecTypes['pg/int4@1']['output'];
+      readonly streak: CodecTypes['pg/int4@1']['output'];
     };
   };
 };
@@ -293,8 +295,10 @@ export type FieldInputTypes = {
       readonly currentPetId: CodecTypes['pg/int4@1']['input'] | null;
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly lastStreakDate: CodecTypes['pg/timestamp-string@1']['input'] | null;
       readonly password: CodecTypes['pg/text@1']['input'];
       readonly stars: CodecTypes['pg/int4@1']['input'];
+      readonly streak: CodecTypes['pg/int4@1']['input'];
     };
   };
 };
@@ -325,8 +329,10 @@ export type StorageColumnTypes = {
       readonly currentPetId: CodecTypes['pg/int4@1']['output'] | null;
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly lastStreakDate: TimestampString<3> | null;
       readonly password: CodecTypes['pg/text@1']['output'];
       readonly stars: CodecTypes['pg/int4@1']['output'];
+      readonly streak: CodecTypes['pg/int4@1']['output'];
     };
   };
 };
@@ -357,8 +363,10 @@ export type StorageColumnInputTypes = {
       readonly currentPetId: CodecTypes['pg/int4@1']['input'] | null;
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly lastStreakDate: CodecTypes['pg/timestamp-string@1']['input'] | null;
       readonly password: CodecTypes['pg/text@1']['input'];
       readonly stars: CodecTypes['pg/int4@1']['input'];
+      readonly streak: CodecTypes['pg/int4@1']['input'];
     };
   };
 };
@@ -397,8 +405,10 @@ export namespace Models {
     currentPetId: CodecTypes['pg/int4@1']['output'] | null;
     email: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
+    lastStreakDate: TimestampString<3> | null;
     password: CodecTypes['pg/text@1']['output'];
     stars: CodecTypes['pg/int4@1']['output'];
+    streak: CodecTypes['pg/int4@1']['output'];
     currentPet: public_Pet | null;
     habits: public_Habit[];
     pets: public_PetCollection[];
@@ -644,6 +654,13 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
+                readonly lastStreakDate: {
+                  readonly dataType: 'pg/timestamp';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly nullable: true;
+                  readonly typeParams: { readonly precision: 3 };
+                  readonly many: false;
+                };
                 readonly password: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
@@ -651,6 +668,16 @@ type ContractBase = Omit<
                   readonly many: false;
                 };
                 readonly stars: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                  readonly many: false;
+                };
+                readonly streak: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
@@ -887,11 +914,23 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
+              readonly lastStreakDate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
               readonly password: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly stars: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly streak: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
@@ -936,8 +975,10 @@ type ContractBase = Omit<
                 readonly currentPetId: { readonly column: 'currentPetId' };
                 readonly email: { readonly column: 'email' };
                 readonly id: { readonly column: 'id' };
+                readonly lastStreakDate: { readonly column: 'lastStreakDate' };
                 readonly password: { readonly column: 'password' };
                 readonly stars: { readonly column: 'stars' };
+                readonly streak: { readonly column: 'streak' };
               };
             };
           };
