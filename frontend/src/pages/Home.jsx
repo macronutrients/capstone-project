@@ -393,15 +393,19 @@ function Home() {
         <img src={petBed} alt='Pet bed' className='pet-bed' />
         <div className="pet-with-streak">
          <img 
-        src={currentPet?.imageUrl || "/images/pets/Nitro.png"}
+        src={currentPet?.imageUrl || "/images/pets/pegasus.png"}
       alt = {currentPet?.name ? currentPet.name || "Selected pet" : "Starter pet rock"}
     className="pet-on-bed"/>
-    <div className = "streak-display">
+    <div className = "streak-display"
+      role="img"
+      aria-label={`${streak} ${streak === 1 ? 'day': 'days'} streak`}>
+
+        
       <img src={streakFire} alt='' />
-      <span>{streak} {streak ===1 ? 'day' : 'days'}</span>
+      <span className="streak-number" aria-hidden="true">{streak}</span>
     </div>
     </div>
-    <img src={petBed} alt ="" className="pet-bed-rim"/>
+    <img src={petBed} alt="" className="pet-bed-rim"/>
       </div>
     </div>
   )

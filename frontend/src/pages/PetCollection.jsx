@@ -1,4 +1,5 @@
 import './PetCollection.css'
+
 import Sidebar from '../components/Sidebar'
 
 function PetCollection() {
