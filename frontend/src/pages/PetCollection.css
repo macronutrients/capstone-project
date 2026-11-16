@@ -14,3 +14,41 @@
   flex-direction: column;
   align-items: center;
 }
+
+/* Grid of pets available to guests */
+.guest-pet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(120px, 100%), 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each pet's image, name, and Select button */
+.guest-pet-card {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f4edff;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.guest-pet-card img {
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.guest-pet-card button {
+  padding: 6px 14px;
+  cursor: pointer;
+}
