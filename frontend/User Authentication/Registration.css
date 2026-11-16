@@ -1,6 +1,7 @@
 body
 {
-    background-color: #cbcffe;
+    background-image: url("farhouse.jpeg");
+    
 }
 
 
@@ -51,7 +52,7 @@ button
     border-radius: 100px;
     padding: 50px;
     background-color: #F25560;
-    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdHmAAPsAGVicVnDJtW9Jic1zRNQLt1vpv-jMRt8_osQ&s=10");
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3BQGE6oYqr9B1NbSv7UzkE4-GfivRejYTVG7eYNZ9KA&s=10");
     font-size: x-large;
     color: #F25560;
     background-size:contain;
