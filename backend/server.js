@@ -1,4 +1,4 @@
-import "dotenv/config";
+
 
 require("dotenv").config();//for our secret variable
 const express = require("express"); //this loads the express items that were downloaded

@@ -1,32 +1,31 @@
-body
-{
-    background-image: url("farhouse.jpeg");
-    
+.register-page {
+    background-image: url("./farhouse.jpeg");
+    min-height: 100vh;
 }
-.track
+.register-page .track
 {
     text-align: center;
     
 }
 
-#con
+.register-page #con
 {
     margin-left: 100px;
     margin-top: 30px;
 }
-#con:hover
+.register-page #con:hover
 {
     filter: invert();
     cursor: grabbing;
 }
 
-input
+.register-page input
 {
     font-size: x-large;
     margin-top: 50px;
 }
 
-#main
+.register-page #main
 {
     padding-left: 500;
     background: #EEEEEE;
@@ -37,18 +36,18 @@ input
     background-repeat: repeat;
 }
 
-#reg
+.register-page #reg
 {
     background: #F25560;
     margin-left: -500px;
     text-align: center;
 }
-p
+.register-page p
 {
     font-family: fantasy;
 }
 
-button
+.register-page button
 {
     border-radius: 100px;
     padding: 50px;
@@ -58,7 +57,7 @@ button
     color: #F25560;
     background-size:contain;
 }
-canvas
+.register-page canvas
 {
     position: fixed;
     top: 0;

@@ -1,0 +1,14 @@
+body
+{
+    background-image: url("closehouse.jpeg");
+}
+#stars
+{
+    background: black;
+    margin-left: 1300px;
+    text-align: center;
+}
+#amount
+{
+    color: yellow;
+}

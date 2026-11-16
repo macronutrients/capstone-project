@@ -1,4 +1,4 @@
-let sign_up = document.querySelector("#sign_up");
+const sign_up = document.querySelector("#sign_up");
 
 const message=document.getElementById("message");
 
@@ -8,16 +8,16 @@ sign_up.addEventListener("click", function()
 });
 
 
-let login = document.querySelector("#login");
+const login = document.querySelector("#login");
 
 login.addEventListener("click", async function()
 {
-    let email = document.querySelector("#correct_name").value;
-    let password = document.querySelector("#correct_password").value;
+    const email = document.querySelector("#correct_name").value;
+    const password = document.querySelector("#correct_password").value;
     try
     {
 
-    let response = await fetch("http://localhost:3000/auth/login", {
+    const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -28,10 +28,10 @@ login.addEventListener("click", async function()
         })
     });
     
-    let data = await response.json();
+    const data = await response.json();
     if(!response.ok)
         {
-            throw new Error(data.error || "Login failed");
+            throw new Error(data.message || "Login failed");
         }
         message.textContent = "Login successful!!";
         if(data.token)
