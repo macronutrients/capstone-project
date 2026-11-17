@@ -318,6 +318,16 @@
                   "kind": "scalar"
                 }
               },
+              "lastStreakDate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamp-string@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 3
+                  }
+                }
+              },
               "password": {
                 "nullable": false,
                 "type": {
@@ -326,6 +336,13 @@
                 }
               },
               "stars": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "streak": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/int4@1",
@@ -392,11 +409,17 @@
                 "id": {
                   "column": "id"
                 },
+                "lastStreakDate": {
+                  "column": "lastStreakDate"
+                },
                 "password": {
                   "column": "password"
                 },
                 "stars": {
                   "column": "stars"
+                },
+                "streak": {
+                  "column": "streak"
                 }
               },
               "namespaceId": "public",
@@ -650,12 +673,29 @@
                   },
                   "nullable": false
                 },
+                "lastStreakDate": {
+                  "codecId": "pg/timestamp-string@1",
+                  "dataType": "pg/timestamp",
+                  "nullable": true,
+                  "typeParams": {
+                    "precision": 3
+                  }
+                },
                 "password": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
                   "nullable": false
                 },
                 "stars": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nullable": false
+                },
+                "streak": {
                   "codecId": "pg/int4@1",
                   "dataType": "pg/int4",
                   "default": {
@@ -707,7 +747,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "c16c2fbe768bc57b97902284060507eb5e29b132b5bbed20875a809334cb752a"
+    "storageHash": "2f615da72cc3d5bf4f17e22a875b35500d68675b95d49dfac05a3fb4a4ff6397"
   },
   "capabilities": {
     "postgres": {

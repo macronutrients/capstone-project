@@ -2,11 +2,13 @@ const express = require("express");//loading express package
 const router = express.Router();//use express and create router object the route handling system
 
 const {db} = require("../src/prisma/db.ts"); //prisma 8
+const resetDailyHabits = require("../dailyHabits/resetDailyHabits");
 const{requireAuth} = require("../middleware/authentiMiddware") //bringing in our backend security function
 
 //g all habits
 router.get("/", requireAuth, async (req, res)=> { //req incoming request that already happened
     try {
+        await resetDailyHabits(req.user.id); // Resets previously completed habits so they can be completed again today.
         const habits = await db.orm.public.Habit.where({userId:req.user.id})
         .all(); //gathering our intel of what we want to send back(all of the habits records) because of our findmany function in this case .all is our find many now
     res.json(habits);} //sends it back
