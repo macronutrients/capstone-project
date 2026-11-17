@@ -1,8 +1,14 @@
 const express = require("express"); //we are loading the express file that we downloaded key functions
 const router = express.Router();//one of our legendary functions provided by express
 
-const {PrismaClient} = require("../generated/prisma"); //now we are loading a local file prisma, because we downloaded it locally but we didn't built from scratch 
-const prisma = new PrismaClient();//we are using prisma here dynamically by storing it in a new object called PrismaClient 
+const { PrismaClient } = require("../generated/prisma");
+const { PrismaPg } = require("@prisma/adapter-pg");
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL
+});
+
+const prisma = new PrismaClient({ adapter });
 
 const {requireAuth} = require("../middleware/authentiMiddware"); //we are loading this from our folder called middleware we actually created that file authenti
 //when someone sends a get request to status this time instead of immediatly running it we are first comfirming that it passes the requestauth funciton then if it does she shall proceed
