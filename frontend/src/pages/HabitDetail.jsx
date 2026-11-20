@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
 import './HabitDetail.css'
+import book from '../assets/book.png'
 
 function HabitDetail() {
   // Gets the habit ID from the URL.
@@ -19,7 +20,7 @@ function HabitDetail() {
 
   // Gets the authentication token.
   const token = localStorage.getItem('token')
-  
+
   // Loads the selected habit.
   useEffect(() => {
     async function getHabit() {
@@ -83,44 +84,49 @@ function HabitDetail() {
           <h1>Habit Detail</h1>
         </div>
 
-        <div className='habit-detail-card'>
-          {/* Shows the editing form when the user clicks the edit button. */}
-          {isEditing && (
-            <EditHabit
-              habit={habit}
-              onSave={handleSave}
-              onCancel={() => setIsEditing(false)}
-              showNotes={true}
-            />
-          )}
-          {!isEditing && (
-            <>
-              <div className='habit-detail-description'>
-                <h2>{habit.description}</h2>
-
-                {!habit.completed && (
-                  <button
-                    className='edit-habit-button'
-                    onClick={() => setIsEditing(true)}
-                  >
-                    Edit Habit
-                  </button>
-                )}
-              </div>
-              <p className='habit-status'>{status}</p>
-              <div className='habit-notes'>
-                <h3>Notes</h3>
-
-                <div className='notes-content'>
-                  <p>{habit.notes || 'No notes yet.'}</p>
+        <div className='habit-detail-container'>
+          <img src={book} className='habit-detail-book' />
+          <div className='habit-detail-card'>
+            {/* Shows the editing form when the user clicks the edit button. */}
+            {isEditing && (
+              <EditHabit
+                habit={habit}
+                onSave={handleSave}
+                onCancel={() => setIsEditing(false)}
+                showNotes={true}
+              />
+            )}
+            {/* Shows the habit details. */}
+            {!isEditing && (
+              <>
+                <div className='habit-detail-description'>
+                  <h2>{habit.description}</h2>
+                  {/* Allows editing if the habit is not completed yet. */}
+                  {!habit.completed && (
+                    <button
+                      className='edit-habit-button'
+                      onClick={() => setIsEditing(true)}
+                    >
+                      Edit Habit
+                    </button>
+                  )}
                 </div>
-              </div>
+                <p className='habit-status'>{status}</p>
+                <div className='habit-notes'>
+                  <h3>Notes</h3>
 
-              <p className='habit-created'>
-                Created: {new Date(habit.createdAt).toLocaleDateString()}
-              </p>
-            </>
-          )}
+                  <div className='notes-content'>
+                    <p>{habit.notes || 'No notes yet.'}</p>
+                  </div>
+                </div>
+
+                {/* Shows the date when the habit was added. */}
+                <p className='habit-created'>
+                  Created: {new Date(habit.createdAt).toLocaleDateString()}
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
