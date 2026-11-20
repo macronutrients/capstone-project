@@ -36,7 +36,7 @@ function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
+      const response = await fetch("/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -47,11 +47,31 @@ function Register() {
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
+let data = {};
+
+if (responseText) {
+  try {
+    data = JSON.parse(responseText);
+  } catch {
+    throw new Error(
+      `Server returned invalid JSON (HTTP ${response.status})`
+    );
+  }
+}
+
+if (!response.ok) {
+  throw new Error(
+    data.message || `Registration failed (HTTP ${response.status})`
+  );
+}
+
+if (!responseText) {
+  throw new Error(
+    `Server returned an empty response (HTTP ${response.status})`
+  );
+}
 
       navigate("/");
 

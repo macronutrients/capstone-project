@@ -286,3 +286,25 @@ object-fit: contain;
     display: none; 
   }
 }
+
+#stars 
+{
+   position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: black;
+    padding: 10px 15px;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+#amount 
+{
+    color: yellow !important;
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}

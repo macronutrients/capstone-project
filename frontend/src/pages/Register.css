@@ -1,5 +1,8 @@
 .register-page {
     background-image: url("./farhouse.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
 }
 .register-page .track
@@ -10,8 +13,8 @@
 
 .register-page #con
 {
-    margin-left: 100px;
-    margin-top: 30px;
+    display: block;
+    margin: 30px auto;
 }
 .register-page #con:hover
 {
@@ -21,25 +24,32 @@
 
 .register-page input
 {
-    font-size: x-large;
-    margin-top: 50px;
+    font-size: 18px;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .register-page #main
 {
-    padding-left: 500;
-    background: #EEEEEE;
-    border-radius: 50px;
+     background: #EEEEEE;
+    border-radius: 20px;
     position: relative;
     z-index: 1;
-    background:-o-repeating-linear-gradient();
-    background-repeat: repeat;
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .register-page #reg
 {
     background: #F25560;
-    margin-left: -500px;
+    display: block;
+    margin: 30px auto;
     text-align: center;
 }
 .register-page p
