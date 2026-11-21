@@ -2,8 +2,9 @@ const express = require("express");//loading express package
 const router = express.Router();//use express and create router object the route handling system
 
 const {db} = require("../src/prisma/db.ts"); //prisma 8
-const resetDailyHabits = require("../dailyHabits/resetDailyHabits");
 const{requireAuth} = require("../middleware/authentiMiddware") //bringing in our backend security function
+const resetDailyHabits = require("../dailyHabits/resetDailyHabits");
+const saveHabitCompletion = require('../dailyHabits/saveHabitCompletion')
 
 //g all habits
 router.get("/", requireAuth, async (req, res)=> { //req incoming request that already happened
@@ -57,6 +58,41 @@ router.post("/", requireAuth,async (req,res)=>{ //so go into habits looks at the
     }
 
 });
+// Gets the completion history for a habit.
+router.get("/:id/completions", requireAuth, async (req, res) => {
+  try {
+    // Gets the habit ID from the URL.
+    const habitId = Number(req.params.id)
+
+    // Finds the habit in the database.
+    const habit = await db.orm.public.Habit.where({
+      id: habitId,
+    }).first()
+
+    // Returns an error if the habit does not exist.
+    if (!habit) {
+      return res.status(404).json({ message: "Habit not found" })
+    }
+
+    // Makes sure the habit belongs to the logged in user.
+    if (habit.userId !== req.user.id) {
+      return res.status(403).json({
+        message: "You do not have permission to access this habit",
+      })
+    }
+    // Gets all recorded completions for this habit.
+    const completions = await db.orm.public.HabitCompletion.where({
+      habitId: habitId,
+    }).all()
+    res.json(completions) // Sends the completion history to the frontend.
+  } catch (error) {
+    // Handles errors.
+    console.error("Error loading completion history:", error)
+    res.status(500).json({
+      message: "Failed to load completion history",
+    })
+  }
+})
 //complete the habbit creation process
 router.patch("/:id/complete", requireAuth, async(req,res)=>{
     try{
@@ -88,6 +124,8 @@ router.patch("/:id/complete", requireAuth, async(req,res)=>{
             id:Number(req.params.id)}) //using our updated prisma method with where instead of findUnique
         .update({completed:true, completedAt: new Date() //go to x section and replace the value with the new updated value 
     });
+   
+    await saveHabitCompletion(habit.id) // Saves the completion date for the habit calendar.
 
     const user = await db.orm.public.User//understand that this is the section that we are going to be working with? 
     .where({id:req.user.id})  //the requested information
