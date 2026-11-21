@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PetCollection from "./pages/PetCollection";
 import HabitDetail from "./pages/HabitDetail";
+import Shop from "./pages/Shop";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         {/* Shows the user's pet collection. */}
         <Route path="/collection" element={<PetCollection />} />
         {/* Shows the details for a habit. */}
+        <Route path="/shop" element={<Shop/>} />
+        {/*shows the pet shop*/}
         <Route path="/habits/:id" element={<HabitDetail />} />
       </Routes>
     </BrowserRouter>

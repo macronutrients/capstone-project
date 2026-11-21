@@ -1,0 +1,103 @@
+/* Shop background and overall layout */
+.shop-page {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+  background-image: url('../assets/pet-room.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Scrollable content beside the sidebar */
+.shop-content {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  margin-left: 250px;
+  padding: 50px 30px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.shop-content h1 {
+  margin: 0 0 24px;
+  color: #30213f;
+  text-align: center;
+}
+
+.shop-content > p {
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #f4edff;
+  color: #30213f;
+  text-align: center;
+}
+
+/* Pet cards wrap into additional rows */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(160px, 100%), 1fr)
+  );
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+/* Individual pet card */
+.shop-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid #d5c5ed;
+  border-radius: 18px;
+  background-color: #f4edff;
+  box-shadow: 0 5px 14px rgb(48 33 63 / 15%);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.shop-card img {
+  display: block;
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.shop-card h2 {
+  margin: 12px 0;
+  color: #30213f;
+  font-size: 20px;
+}
+
+/* Star cost stays at the bottom of each card */
+.shop-card .shop-price {
+  margin: auto 0 0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background-color: #fff2bc;
+  color: #684600;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.shop-price span {
+  color: #896000;
+}
+
+/* Smaller spacing on narrow screens */
+@media (max-width: 600px) {
+  .shop-content {
+    padding: 30px 12px;
+  }
+
+  .shop-grid {
+    gap: 12px;
+  }
+}

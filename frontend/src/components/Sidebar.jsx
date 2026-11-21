@@ -52,6 +52,15 @@ function Sidebar() {
             >
               Pets
             </button>
+
+            {/* Opens the pet shop. */}
+            <button
+              className='nav-button'
+              onClick={() => navigate('/shop')}
+              disabled={location.pathname === '/shop'}
+            >
+              Shop
+            </button>
           </div>
 
           {/* Returns the user to the login page. */}
