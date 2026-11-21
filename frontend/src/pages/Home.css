@@ -230,24 +230,63 @@
   display:block;
   width: 100%;
   height: auto;
+  position: relative;
+  top: 7px;
+  transform-origin: center 90%;
+  transform: scale(1.25);
+  animation: pet-idle 1.6s ease-in-out infinite;
 }
 
 .streak-display{
   position: absolute;
   top:0;
   right:0;
-  display: flex;
+  transform: translate(50%, -50%);
+  display: grid;
   align-items: center;
   gap: 4px;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 600;
   white-space: nowrap;
+  place-items: center;
 }
 
 .streak-display img{
-width:16px;
-height: 16px;
+  display: block;
+width:60%;
+height: 60%;
 object-fit: contain;
+grid-area: 1 / 1; 
+}
+
+.streak-filter_{
+position: absolute;}
+.streak-flame-base{
+  mask-image: linear-gradient(to bottom, tranpsarent 35%, black 58%); 
+}
+
+.streak-flame-tips{
+  filter: url("#flame-tip-ripple");
+  mask-image: linear-gradient(tobottom, black 35%, transparent 58%);
+}
+
+streak-display .streak-flame-tips{
+  display:none;
+}
+
+
+.streak-number{
+  position: absolute;
+  z-index: 1;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffc400fd;
+  font-size:13px;
+  font-weight: 800;
+  line-height: 1;
+
+
 }
 /*helps the pet look like its actually inside*/
 .pet-bed-rim{
@@ -257,7 +296,8 @@ object-fit: contain;
   width: calc(100% - 40px);
   height: auto;
   pointer-events:none;
-  clip-path: polygon(0 50%, 15% 56%, 30% 61%, 50% 64%, 70% 61%, 85% 56%, 100% 50%, 100% 100%, 0 100%);
+  z-index: 2;
+  clip-path: polygon(0 48%, 10% 36%, 18% 34%, 26% 48%, 37% 53%, 44% 54%, 56% 54%, 66% 55%, 75% 48%, 82% 34%, 90% 36%, 100% 48%, 100% 100%, 0 100%);
 }
 
 
@@ -280,6 +320,16 @@ object-fit: contain;
   }
 }
 
+@keyframes pet-idle {
+  0%, 100%{
+    scale: 1 1;
+  }
+
+  50%{
+    scale:1.015 0.96;
+  }
+  
+}
 /*skips the flash for people who need it off*/
 @media (prefers-reduced-motion: reduce){
   .welcome-flash{

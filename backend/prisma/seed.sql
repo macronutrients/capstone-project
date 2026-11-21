@@ -30,7 +30,7 @@ VALUES
 ("Seal", "/images/pets/Seal.png", "squeky", 60)
 ("Shorkie", "/images/pets/shorkie.png", "RIP", 60),
 ("Owl", "/images/pets/Owl.png", "TheEye", 60),
-("Whale", "/images/pets/Whale/png", "Huge", 60),
+("Whale", "/images/pets/Whale.png", "Huge", 60),
 ("chipmunk", "/images/pets/chipmunk.png", "GOGoGO", 60),
 ("Chimpanzee", "/images/pets/Chimpanzee.png", "DrakenJosh", 60),
 ('parrot', '/images/pets/parrot.png', 'Annoying', 60),

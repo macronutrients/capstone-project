@@ -30,7 +30,8 @@ function Home() {
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token') //frontend longer term storagelocalstorage, used and get token from it and call it token
-  const [currentPet, setCurrentPet] = useState(null)
+const guestPetImageUrl = localStorage.getItem('guestPetImageUrl')
+const [currentPet, setCurrentPet] = useState(null)
   // fixes the issue of starting with streak 0 when not touching the habits yet, 
   async function getUser(){
     try { //literal copy and paste of get habit with minor changes
@@ -437,15 +438,19 @@ function Home() {
         <img src={petBed} alt='Pet bed' className='pet-bed' />
         <div className="pet-with-streak">
          <img 
-        src={currentPet?.imageUrl || "/images/pets/Nitro.png"}
-      alt = {currentPet?.name ? currentPet.name || "Selected pet" : "Starter pet rock"}
+        src={guestPetImageUrl || "/images/pets/Nitro.png"}
+      alt = {guestPetImageUrl ? 'Duck' : 'Starter pet rock'}
     className="pet-on-bed"/>
-    <div className = "streak-display">
+    <div className = "streak-display"
+      role="img"
+      aria-label={`${streak} ${streak === 1 ? 'day': 'days'} streak`}>
+
+        
       <img src={streakFire} alt='' />
-      <span>{streak} {streak ===1 ? 'day' : 'days'}</span>
+      <span className="streak-number" aria-hidden="true">{streak}</span>
     </div>
     </div>
-    <img src={petBed} alt ="" className="pet-bed-rim"/>
+    <img src={petBed} alt="" className="pet-bed-rim"/>
       </div>
     </div>
   )
