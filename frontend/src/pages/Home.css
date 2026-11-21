@@ -335,12 +335,8 @@ streak-display .streak-flame-tips{
   .welcome-flash{
     display: none; 
   }
-
-
-.pet-on-bed{
-  animation: none;
 }
-}
+
 #stars 
 {
    position: fixed;

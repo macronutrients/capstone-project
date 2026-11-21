@@ -2,14 +2,15 @@
 const express = require("express"); //load express file legendary functions
 const router = express.Router(); //use the router legendary function
 
-const {PrismaClient} = require("../generated/prisma"); // load the prisma file this is technically a local file but it was ultimately gotten from somewhere else at some parts of it.
+const { PrismaClient } = require("../generated/prisma"); // load the prisma file this is technically a local file but it was ultimately gotten from somewhere else at some parts of it.
 const { requireAuth } = require("../middleware/authentiMiddware");
-const prisma = new PrismaClient(); //create an object file for this code have it by dynamic
-//adding new requirements for the connecting process
-const {Pool} = require("pg");
+const prisma = new PrismaClient();
+
+const { Pool } = require("pg");
 const petPool = new Pool({
-    connectionString: process.env.DATABASE_URL, connectionTimeoutMillis:15000,
-})
+    connectionString: process.env.DATABASE_URL,
+    connectionTimeoutMillis: 15000,
+});
 
 router.get("/", async(req, res)=>{//whole function just send the prisma pets to in json format to the requester
     try{
