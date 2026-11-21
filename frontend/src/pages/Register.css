@@ -1,0 +1,84 @@
+.register-page {
+    background-image: url("./farhouse.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+.register-page .track
+{
+    text-align: center;
+    
+}
+
+.register-page #con
+{
+    display: block;
+    margin: 30px auto;
+}
+.register-page #con:hover
+{
+    filter: invert();
+    cursor: grabbing;
+}
+
+.register-page input
+{
+    font-size: 18px;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.register-page #main
+{
+     background: #EEEEEE;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.register-page #reg
+{
+    background: #F25560;
+    display: block;
+    margin: 30px auto;
+    text-align: center;
+}
+.register-page p
+{
+    font-family: fantasy;
+}
+
+.register-page button
+{
+    border-radius: 100px;
+    padding: 50px;
+    background-color: #F25560;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3BQGE6oYqr9B1NbSv7UzkE4-GfivRejYTVG7eYNZ9KA&s=10");
+    font-size: x-large;
+    color: #F25560;
+    background-size:contain;
+}
+.register-page canvas
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    color: blue;
+}
+
+
+
+
+

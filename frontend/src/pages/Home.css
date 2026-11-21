@@ -108,8 +108,15 @@
   gap: 10px;
   flex: 1;
   margin-top: 9px;
-  margin-left: 12px;
-  margin-right: 12px;
+}
+
+.habit-actions button {
+  border: none;
+  background: transparent;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 /* Edit habit form */
@@ -333,4 +340,25 @@ streak-display .streak-flame-tips{
 .pet-on-bed{
   animation: none;
 }
+}
+#stars 
+{
+   position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: black;
+    padding: 10px 15px;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+#amount 
+{
+    color: yellow !important;
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
 }

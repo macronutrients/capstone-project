@@ -21,6 +21,7 @@ function Home() {
   const [editingHabitId, setEditingHabitId] = useState(null)
 
   const [streak, setStreak] = useState(0)
+  const [stars, setStars] = useState(0)
 
   // Stores the ID of the habit with the open menu.
   const [openMenuId, setOpenMenuId] = useState(null)
@@ -117,6 +118,7 @@ const [currentPet, setCurrentPet] = useState(null)
       setHabits((prevHabits) => [newHabit, ...prevHabits])
       // Empties the input field.
       setHabitDescription('')
+      setStars((previousStars) => previousStars + 1)
     } catch (error) {
       console.error('Error creating habit:', error)
     }
@@ -294,6 +296,20 @@ const [currentPet, setCurrentPet] = useState(null)
         <div className='welcome-flash' aria-hidden='true'/>
       )}
       <Sidebar />
+      
+      <div id="stars">
+        
+       <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          height="24px"
+          width="24px"
+          fill="#008800"
+        >
+          <path d="M8.85,16.83L12,14.93l3.15,1.93l-0.82-3.6l2.78-2.4l-3.65-0.33L12,7.13L10.55,10.5L6.9,10.83l2.78,2.43L8.85,16.83ZM5.83,21l1.63-7.03L2,9.25L9.2,8.63L12,2l2.8,6.63L22,9.25l-5.45,4.72L18.18,21L12,17.27L5.83,21Z" />
+        </svg>
+        <p id="amount">0</p>
+      </div>
       <main className='home-content'>
         {/* Section for adding a new habit */}
         <div className='add-habit'>

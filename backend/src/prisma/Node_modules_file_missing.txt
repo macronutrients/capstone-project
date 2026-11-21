@@ -1,0 +1,6 @@
+The component that failed validation is workerd@1.20260901.1. It’s an installed dependency under:
+backend/node_modules/workerd/
+
+Its installation script, install.js, tried to run the workerd executable, which crashed with a memory-allocation error.
+
+npm ci completed, and your Express backend now starts successfully. The failure concerns that executable’s validation.

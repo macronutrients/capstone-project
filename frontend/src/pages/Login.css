@@ -1,0 +1,84 @@
+.login-page
+{
+    background-image: url("./closehouse.jpeg");
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.login-box
+{
+    background: #EEEEEE;
+    padding: 20px;
+    margin: auto;
+   width: 90%;
+   max-width: 500px;
+    box-sizing: border-box; 
+    margin-top: 30px;
+    border-radius: 5px;
+}
+
+.login-page input
+{
+    font-size: 18px;
+    color: #0000FF;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+h1
+{
+    text-align: center;
+}
+#login
+{
+    display: block;
+    margin: 30px auto 0;
+    background-image: url("https://i0.wp.com/digitaldrawingideas.com/wp-content/uploads/2025/07/how-to-draw-a-cow-cute-cow-drawing-15.jpg?fit=1024%2C1024&ssl=1");
+    
+}
+#sign_up
+{
+    display: block;
+    margin: 30px auto 0;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQllutfmOfLA0HWYyrASwIdYCnEmZ-Wa0twoEVLL9g1tc2VDwMWkJaE5ce&s=10");
+    
+
+}
+button
+{
+    cursor: alias;
+    margin-top: 30px;
+    border-radius: 50px;
+    background-color: #F25560;
+    padding: 50px;
+    background-size:contain;
+    color: #F25560;
+    font-size: x-large;
+    
+}
+
+button:hover
+{
+    filter: invert();
+    cursor:grabbing;
+}
+#message {
+    margin-top:  15px;;
+}
+a{
+    color: #2d6a4f;
+}
+label{
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+}
+
+
