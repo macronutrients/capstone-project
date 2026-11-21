@@ -21,6 +21,8 @@ model Habit {
   // Connects this habit to a specific user.
   userId Int
   user   User @relation(fields: [userId], references: [id])
+  
+  completions HabitCompletion[] // Completion history for a habit.
 }
 
 // Stores pets that were retrieved from the API.
@@ -66,4 +68,17 @@ model User {
   // ID of the pet currently selected for the Habits page.
   currentPetId Int?
   currentPet   Pet? @relation("CurrentPet", fields: [currentPetId], references: [id]) // Pet that is currently selected by the user.
+}
+
+// Stores the dates when each habit was completed for the monthly tracker.
+model HabitCompletion {
+  id        Int      @id @default(autoincrement())
+  habitId   Int
+  date      DateTime
+
+  // Connects each completion to a habit.
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+   
+  // Prevents duplicate records.
+  @@unique([habitId, date])
 }

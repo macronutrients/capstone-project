@@ -1,0 +1,122 @@
+[
+  {
+    "id": "table.HabitCompletion",
+    "label": "Create table \"HabitCompletion\"",
+    "summary": "Creates table \"HabitCompletion\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "HabitCompletion"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"HabitCompletion\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HabitCompletion\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"HabitCompletion\"",
+        "sql": "CREATE TABLE \"public\".\"HabitCompletion\" (\n  \"date\" timestamp(3) NOT NULL,\n  \"habitId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"HabitCompletion\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HabitCompletion\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.HabitCompletion.HabitCompletion_habitId_date_key",
+    "label": "Create index \"HabitCompletion_habitId_date_key\" on \"HabitCompletion\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "HabitCompletion_habitId_date_key",
+        "table": "HabitCompletion"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"HabitCompletion_habitId_date_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HabitCompletion_habitId_date_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"HabitCompletion_habitId_date_key\"",
+        "sql": "CREATE UNIQUE INDEX \"HabitCompletion_habitId_date_key\" ON \"public\".\"HabitCompletion\" (\"habitId\", \"date\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"HabitCompletion_habitId_date_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HabitCompletion_habitId_date_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.HabitCompletion.HabitCompletion_habitId_fkey",
+    "label": "Add foreign key \"HabitCompletion_habitId_fkey\" on \"HabitCompletion\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "HabitCompletion_habitId_fkey",
+        "table": "HabitCompletion"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"HabitCompletion_habitId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "HabitCompletion_habitId_fkey",
+          "public",
+          "\"public\".\"HabitCompletion\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"HabitCompletion_habitId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"HabitCompletion\"\nADD CONSTRAINT \"HabitCompletion_habitId_fkey\"\nFOREIGN KEY (\"habitId\")\nREFERENCES \"public\".\"Habit\" (\"id\")\nON DELETE CASCADE\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"HabitCompletion_habitId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "HabitCompletion_habitId_fkey",
+          "public",
+          "\"public\".\"HabitCompletion\""
+        ]
+      }
+    ]
+  }
+]
