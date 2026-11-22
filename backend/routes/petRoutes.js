@@ -16,13 +16,13 @@ router.get("/", async(req, res)=>{//whole function just send the prisma pets to 
         const pets = await prisma.pet.findMany(); //here we are actually getting it from prisma even waiting for prisma to actually get the file before we continues
         res.json(pets);//here we are sending it back but in json format to the requester.
     }
-    catch(error){ //this is just a standard catch error from javascript for whenever we try risky code in try
-        res.status(500).json({ //error code
-            message: "Unable to obtain pets" //the actual error message
-        });
+    catch(error){
+    console.error("GET /pets failed:", error);
 
-
-    }
+    res.status(500).json({
+        message: "Unable to obtain pets"
+    });
+}
 });
 
 router.get("/collection/:userId", requireAuth, async(req, res)=>{//this is meant to get all of the pets from the requesters user

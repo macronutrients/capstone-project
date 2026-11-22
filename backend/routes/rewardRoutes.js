@@ -32,11 +32,25 @@ router.get("/status", requireAuth, async(req, res)=>{ //first we go into the pet
         });
     }
 
-    catch(error){ //the javascript legendary catch error function that returns if the above fails
-        res.status(500).json({ // the code
-            message: "Unable to get reward status" // the message
+    catch (error) {
+    console.error("Pet purchase failed:", error);
+
+    if (error.code === "P2002") {
+        return res.status(400).json({
+            message: "Pet is already unlocked"
         });
     }
+
+    if (error.status === 403) {
+        return res.status(403).json({
+            message: error.message
+        });
+    }
+
+    res.status(500).json({
+        message: "Unable to purchase pet"
+    });
+}
 });
 
 router.get("/pets", requireAuth, async(req, res)=> {//another get function but this time we are getting the pets  same idea requester then bop then send back as res
@@ -86,26 +100,67 @@ router.post("/unlock/:petId", requireAuth, async(req,res)=>{ //we are calling th
             });
         }
         //adding the stars check
-        const user = await prisma.user.findUnique({//using the prisma for postgresql gets user information
-            where:{id:req.user.id} //the specific user information compared to the requested user information looking for a match
-        });
+        const user = await prisma.user.findUnique({
+    where: { id: req.user.id }
+});
 
-        if(user.stars<pet.requiredStars){ //checks the user stars to be more than the required amount of stars we have stored
-            return res.status(403).json({ //returns an error mesage if this is not true I said it backwards but same idea
-                message: "Not enough stars to unlock this pet" // the actual error message
-            });
+if (!user) {
+    return res.status(404).json({
+        message: "User not found"
+    });
+}
+
+if (user.stars < pet.requiredStars) {
+    return res.status(403).json({
+        message: "Not enough stars to unlock this pet"
+    });
+}
+
+// Deduct stars and unlock the pet together.
+const result = await prisma.$transaction(async (tx) => {
+
+    const deducted = await tx.user.updateMany({
+        where: {
+            id: req.user.id,
+            stars: { gte: pet.requiredStars }
+        },
+        data: {
+            stars: { decrement: pet.requiredStars }
         }
+    });
 
+    if (deducted.count !== 1) {
+        const error = new Error("Not enough stars to unlock this pet");
+        error.status = 403;
+        throw error;
+    }
 
-        const unlockedPet = await prisma.petCollection.create({ //unlocks a pet by first making changes to pet collection by creating a record
-            data:{userId: req.user.id, petId: petId}, include: { //which includes updating data, with a new userId which is the requested one and a new petId which is the url sent by the requester 
-                pet:true //give up the pet details
-            }
-        });
+    const unlockedPet = await tx.petCollection.create({
+        data: {
+            userId: req.user.id,
+            petId: petId
+        },
+        include: {
+            pet: true
+        }
+    });
 
-        res.status(201).json({ // success code if the file worked out
-            message: "Pet unlocked", pet: unlockedPet //success message you unlocked your new pet !! and we put it in our response back thats in json format unlock with all of its unlocked pet variable information
-        });
+    const updatedUser = await tx.user.findUnique({
+        where: { id: req.user.id },
+        select: { stars: true }
+    });
+
+    return {
+        unlockedPet,
+        remainingStars: updatedUser.stars
+    };
+});
+
+res.status(201).json({
+    message: "Pet purchased",
+    pet: result.unlockedPet,
+    stars: result.remainingStars
+});
     }
 
     catch(error){ //unsuccesfully pet addition
