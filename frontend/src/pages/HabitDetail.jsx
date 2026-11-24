@@ -21,35 +21,34 @@ function HabitDetail() {
   // Gets the authentication token.
   const token = localStorage.getItem('token')
 
+  async function getHabit() {
+    setError('') // Clears any previous error message.
+    setHabit(null) // Clears the previous habit before loading a new one.
+    setIsEditing(false) // Closes the editing form when loading another habit.
+    try {
+      // Sends a request to get the habit from the backend.
+      const response = await fetch(`http://localhost:3000/habits/${id}`, {
+        headers: {
+          // Sends the authentication token for user verification.
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const data = await response.json()
+      // Checks if the request failed.
+      if (!response.ok) {
+        setError(data.message || 'Failed to load habit.')
+        return
+      }
+      // Stores the retrieved habit in state.
+      setHabit(data)
+    } catch (error) {
+      console.error('Error loading habit:', error) // Logs the error for debugging.
+      setError('Failed to load habit.') // Stores an error message to display to the user.
+    }
+  }
+
   // Loads the selected habit.
   useEffect(() => {
-    async function getHabit() {
-      setError('') // Clears any previous error message.
-      setHabit(null) // Clears the previous habit before loading a new one.
-      setIsEditing(false) // Closes the editing form when loading another habit.
-      try {
-        // Sends a request to get the habit from the backend.
-        const response = await fetch(`http://localhost:3000/habits/${id}`, {
-          headers: {
-            // Sends the authentication token for user verification.
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        const data = await response.json()
-        // Checks if the request failed.
-        if (!response.ok) {
-          setError(data.message || 'Failed to load habit.')
-          return
-        }
-
-        // Stores the retrieved habit in state.
-        setHabit(data)
-      } catch (error) {
-        console.error('Error loading habit:', error) // Logs the error for debugging.
-        setError('Failed to load habit.') // Stores an error message to display to the user.
-      }
-    }
-
     getHabit()
   }, [id, token])
 
@@ -98,9 +97,9 @@ function HabitDetail() {
             )}
             {/* Shows the habit details. */}
             {!isEditing && (
-              <>
-                <div className='habit-detail-description'>
-                  <h2>{habit.description}</h2>
+              <div className='habit-detail-pages'>
+                {/* Left page of the book */}
+                <div className='habit-detail-left'>
                   {/* Allows editing if the habit is not completed yet. */}
                   {!habit.completed && (
                     <button
@@ -110,21 +109,25 @@ function HabitDetail() {
                       Edit Habit
                     </button>
                   )}
-                </div>
-                <p className='habit-status'>{status}</p>
-                <div className='habit-notes'>
-                  <h3>Notes</h3>
+                  <h2>{habit.description}</h2>
 
-                  <div className='notes-content'>
-                    <p>{habit.notes || 'No notes yet.'}</p>
+                  <p className='habit-status'>{status}</p>
+                  <div className='habit-notes'>
+                    <h3>Notes</h3>
+
+                    <div className='notes-content'>
+                      <p>{habit.notes || 'No notes yet.'}</p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Shows the date when the habit was added. */}
-                <p className='habit-created'>
-                  Created: {new Date(habit.createdAt).toLocaleDateString()}
-                </p>
-              </>
+                  {/* Shows the date when the habit was added. */}
+                  <p className='habit-created'>
+                    Created: {new Date(habit.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                {/* Right page of the book */}
+                <div className='habit-detail-right'></div>
+              </div>
             )}
           </div>
         </div>
