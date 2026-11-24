@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
+import MonthlyTracker from '../components/MonthlyTracker'
 import './HabitDetail.css'
 import book from '../assets/book.png'
 
@@ -12,6 +13,8 @@ function HabitDetail() {
 
   // Stores a habit loaded from the backend.
   const [habit, setHabit] = useState(null)
+  // Stores the dates when the habit was completed.
+  const [completions, setCompletions] = useState([])
   // Stores an error message if the habit fails to load.
   const [error, setError] = useState('')
 
@@ -47,9 +50,32 @@ function HabitDetail() {
     }
   }
 
-  // Loads the selected habit.
+  // Loads the completion history for the selected habit.
+  async function getCompletions() {
+    try {
+      // Sends a request to get the completion dates from the backend.
+      const response = await fetch(`http://localhost:3000/habits/${id}/completions`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        console.error(data.message || 'Failed to load completion history.')
+        return
+      }
+      // Stores the retrieved records in state.
+      setCompletions(data)
+    } catch (error) {
+      console.error('Error loading completion history:', error)
+    }
+  }
+  
+  // Loads the selected habit and its completion history.
   useEffect(() => {
     getHabit()
+    setCompletions([])
+    getCompletions()
   }, [id, token])
 
   // Updates the habit on the page and closes the editing form after saving.
@@ -126,7 +152,10 @@ function HabitDetail() {
                   </p>
                 </div>
                 {/* Right page of the book */}
-                <div className='habit-detail-right'></div>
+                <div className='habit-detail-right'>
+                  <h2 className='completion-history-title'>Completion History</h2>
+                  <MonthlyTracker completions={completions} />
+                </div>
               </div>
             )}
           </div>
