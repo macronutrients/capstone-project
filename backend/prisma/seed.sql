@@ -1,4 +1,4 @@
---sql command "insert" allows us to add new rows into the pet table
+--sql command 'insert' allows us to add new rows into the pet table
 INSERT INTO "Pet" ("apiPetId", "imageUrl", "name", "requiredStars")
 --then we use another sql command that basically tells the system that the actual values that we will be implementing is below
 VALUES
@@ -16,23 +16,23 @@ VALUES
 ('penguin', '/images/pets/Penguin-2.png', 'goal', 60),
 ('blackPanther', '/images/pets/BlackPanther-3.png', 'Goat', 65),
 ('dragon_1', '/images/pets/Dragon-5.png', 'flyHigh', 60),
-("Nemo", "/images/pets/clownfish-1.png","clownfish",60),
-("sheep", "/images/pets/woolly_sheep.png","walkingCloud",60),
-("skunk", "/images/pets/Skunk.png","ewwww", 60),
-("frog", "/images/pets/frog.png","gulp",60),
-("snail", "/images/pets/snail.png", "slowSteady",60),
-("sloth", "/images/pets/sloth.png", "ssssllleeepppy", 60),
-("ElephantCalf", "/images/pets/ElephantCalf.png", "bigFella", 60),
-("Shihtzu", "/images/pets/Shihtzu.png", "buzie", 60),
-("Duck", "/images/pets/duck.png", "quack", 60),
-("Goose", "/images/pets/Goose.png", "duckDuck", 60),
-("Husky", "/images/pets/Husky.png", "Siberian", 60),,
-("Seal", "/images/pets/Seal.png", "squeky", 60)
-("Shorkie", "/images/pets/shorkie.png", "RIP", 60),
-("Owl", "/images/pets/Owl.png", "TheEye", 60),
-("Whale", "/images/pets/Whale.png", "Huge", 60),
-("chipmunk", "/images/pets/chipmunk.png", "GOGoGO", 60),
-("Chimpanzee", "/images/pets/Chimpanzee.png", "DrakenJosh", 60),
+('Nemo', '/images/pets/clownfish-1.png','clownfish',60),
+('sheep', '/images/pets/woolly_sheep.png','walkingCloud',60),
+('skunk', '/images/pets/Skunk.png','ewwww', 60),
+('frog', '/images/pets/frog.png','gulp',60),
+('snail', '/images/pets/snail.png', 'slowSteady',60),
+('sloth', '/images/pets/sloth.png', 'ssssllleeepppy', 60),
+('ElephantCalf', '/images/pets/ElephantCalf.png', 'bigFella', 60),
+('Shihtzu', '/images/pets/Shihtzu.png', 'buzie', 60),
+('Duck', '/images/pets/duck.png', 'quack', 60),
+('Goose', '/images/pets/Goose.png', 'duckDuck', 60),
+('Husky', '/images/pets/Husky.png', 'Siberian', 60),
+('Seal', '/images/pets/Seal.png', 'squeky', 60),
+('Shorkie', '/images/pets/shorkie.png', 'RIP', 60),
+('Owl', '/images/pets/Owl.png', 'TheEye', 60),
+('Whale', '/images/pets/Whale.png', 'Huge', 60),
+('chipmunk', '/images/pets/chipmunk.png', 'GOGoGO', 60),
+('Chimpanzee', '/images/pets/Chimpanzee.png', 'DrakenJosh', 60),
 ('parrot', '/images/pets/parrot.png', 'Annoying', 60),
 ('snow_leopard', '/images/pets/snow-leopard.png', 'ICE', 60),
 ('raccoon', '/images/pets/raccoon.png', 'DatGuy', 60),
@@ -46,4 +46,5 @@ VALUES
 ('narwhal', '/images/pets/narwhal.png', 'Twist', 60),
 ('mammoth', '/images/pets/mammoth.png', 'Woolly', 60),
 ('triceratops', '/images/pets/triceratops.png', 'Trio', 60),
-('pegasus', '/images/pets/pegasus.png', 'Nimbus', 60),
+('pegasus', '/images/pets/pegasus.png', 'Nimbus', 60)
+ON CONFLICT ("apiPetId") DO NOTHING;
