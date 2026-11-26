@@ -13,7 +13,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://sturdy-space-trout-5p795wwgj6p344pr-3000.app.github.dev/auth/login", {
+      const response = await fetch("/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
