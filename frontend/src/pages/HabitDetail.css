@@ -29,7 +29,7 @@
   position: absolute;
   top: 55%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Moves the book left and up to center it. */
+  transform: translate(-50%, -50%); /* Moves the book left and up. */
   width: 160%;
   max-width: none;
   height: auto;
@@ -71,9 +71,10 @@
   padding: 30px;
 }
 
+/* Layout for the two book pages */
 .habit-detail-pages {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two columns for the book pages. */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two columns for the pages. */
   gap: 90px;
   width: 120%;
   height: 550px;
@@ -89,6 +90,7 @@
   transform: translateY(35px);
 }
 
+/* Left page for habit information */
 .habit-detail-left {
   position: relative;
   display: flex;
@@ -97,26 +99,7 @@
   padding: 110px 45px 0;
 }
 
-.habit-detail-left .edit-habit-button {
-  position: absolute;
-  top: 85px;
-  right: 20px;
-  background-color: #f7b16b;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  transform: translateY(-25px);
-}
-
-.habit-detail-left h2 {
-  margin: 0;
-  max-height: 90px;
-  overflow-y: auto; /* Allows the description to scroll if it is too long. */
-  overflow-wrap: anywhere; /* Wraps long words onto the next line. */
-}
-
+/* Right page for the monthly tracker */
 .habit-detail-right {
   display: flex;
   flex-direction: column;
@@ -125,10 +108,17 @@
   min-height: 0;
 }
 
+/* Habit description */
+.habit-detail-left h2 {
+  margin: 0;
+  max-height: 90px;
+  overflow-y: auto; /* Allows the description to scroll if it is too long. */
+  overflow-wrap: anywhere; /* Breaks long words onto the next line. */
+}
+
 /* Habit completion status */
 .habit-status {
   color: #9443ce;
-  display: inline-block; /* Keeps the status background around the text. */
   font-size: 18px;
   font-weight: 600;
 }
@@ -139,6 +129,10 @@
   margin-top: 10px;
   padding: 10px 0;
   border-top: 1px solid #a0693759; /* Adds a line to separate the notes from the habit description. */
+}
+
+.habit-notes h3 {
+  margin: 10px 0 5px;
 }
 
 .notes-content {
@@ -154,21 +148,100 @@
   margin: 0;
 }
 
-.habit-notes h3 {
-  margin: 10px 0 5px;
-}
-
 /* Date when habit was created */
 .habit-created {
-  margin-top: 25px;
+  margin-top: 10px;
   font-size: 14px;
   color: #525d82;
 }
 
-/* Notes field when editing */
-.habit-detail-card textarea {
-  min-height: 95px;
+/* Edit button */
+.habit-detail-left .edit-habit-button {
+  position: absolute;
+  top: 85px;
+  right: 20px;
+  background-color: #f7b16b;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transform: translateY(-25px);
+}
+
+/* Editing form */
+.habit-detail-left .edit-habit {
+  width: calc(100% + 60px);
+  margin-left: -30px;
+  transform: translateY(-45px);
+}
+
+/* Decoration */
+.habit-detail-left .edit-habit-decoration {
+  text-align: center;
+  font-size: 27px;
+  color: #bc795e;
+  letter-spacing: 5px;
+  line-height: 1;
+  transform: translateY(-10px);
+}
+
+/* Description and notes labels */
+.habit-detail-left .edit-habit label {
+  display: block;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 600;
+  color: #574536;
+}
+
+/* Input and textarea fields */
+.habit-detail-left .edit-habit input,
+.habit-detail-left .edit-habit textarea {
   width: 100%;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  background-color: #f7f0fe;
+  border: 1px solid #d5c3f7;
+}
+
+/* Notes field when editing */
+.habit-detail-left .edit-habit textarea {
+  min-height: 95px;
+  height: 150px;
+}
+
+/* Save and Cancel buttons */
+.habit-detail-left .edit-habit-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.habit-detail-left .edit-habit-actions button {
+  width: 90px;
+  height: 37px;
+  box-sizing: border-box;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Save button */
+.habit-detail-left .edit-habit-actions button:first-child {
+  background-color: #a78bdb;
+  color: white;
+}
+
+/* Cancel button */
+.habit-detail-left .edit-habit-actions button:last-child {
+  background-color: #eae0f9;
+  border: 1px solid #c4b0e2;
+  color: #333333;
 }
 
 /* Calendar section */

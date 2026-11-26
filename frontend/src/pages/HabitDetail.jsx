@@ -17,13 +17,13 @@ function HabitDetail() {
   const [completions, setCompletions] = useState([])
   // Stores an error message if the habit fails to load.
   const [error, setError] = useState('')
-
-  // Checks whether the user is editing the habit.
+  // Keeps track of whether the user is editing the habit.
   const [isEditing, setIsEditing] = useState(false)
 
   // Gets the authentication token.
   const token = localStorage.getItem('token')
 
+  // Fetches the selected habit from the backend.
   async function getHabit() {
     setError('') // Clears any previous error message.
     setHabit(null) // Clears the previous habit before loading a new one.
@@ -50,7 +50,7 @@ function HabitDetail() {
     }
   }
 
-  // Loads the completion history for the selected habit.
+  // Fetches the completion history for the selected habit.
   async function getCompletions() {
     try {
       // Sends a request to get the completion dates from the backend.
@@ -70,7 +70,7 @@ function HabitDetail() {
       console.error('Error loading completion history:', error)
     }
   }
-  
+
   // Loads the selected habit and its completion history.
   useEffect(() => {
     getHabit()
@@ -111,53 +111,57 @@ function HabitDetail() {
 
         <div className='habit-detail-container'>
           <img src={book} className='habit-detail-book' />
+          {/* Shows the habit information and completion history. */}
           <div className='habit-detail-card'>
-            {/* Shows the editing form when the user clicks the edit button. */}
-            {isEditing && (
-              <EditHabit
-                habit={habit}
-                onSave={handleSave}
-                onCancel={() => setIsEditing(false)}
-                showNotes={true}
-              />
-            )}
-            {/* Shows the habit details. */}
-            {!isEditing && (
-              <div className='habit-detail-pages'>
-                {/* Left page of the book */}
-                <div className='habit-detail-left'>
-                  {/* Allows editing if the habit is not completed yet. */}
-                  {!habit.completed && (
+            {/* Book pages */}
+            <div className='habit-detail-pages'>
+              {/* Left page of the book */}
+              <div className='habit-detail-left'>
+                {/* Shows the editing form when the user clicks the edit button. */}
+                {isEditing && (
+                  <EditHabit
+                    habit={habit}
+                    onSave={handleSave}
+                    onCancel={() => setIsEditing(false)}
+                    showNotes={true}
+                  />
+                )}
+
+                {/* Shows the habit details when not editing. */}
+                {!isEditing && (
+                  <>
                     <button
                       className='edit-habit-button'
                       onClick={() => setIsEditing(true)}
                     >
-                      Edit Habit
+                      {habit.completed && 'Edit Notes'}
+                      {!habit.completed && 'Edit Habit'}
                     </button>
-                  )}
-                  <h2>{habit.description}</h2>
 
-                  <p className='habit-status'>{status}</p>
-                  <div className='habit-notes'>
-                    <h3>Notes</h3>
+                    <h2>{habit.description}</h2>
 
-                    <div className='notes-content'>
-                      <p>{habit.notes || 'No notes yet.'}</p>
+                    <p className='habit-status'>{status}</p>
+
+                    <div className='habit-notes'>
+                      <h3>Notes</h3>
+                      <div className='notes-content'>
+                        <p>{habit.notes || 'No notes yet.'}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Shows the date when the habit was added. */}
-                  <p className='habit-created'>
-                    Created: {new Date(habit.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-                {/* Right page of the book */}
-                <div className='habit-detail-right'>
-                  <h2 className='completion-history-title'>Completion History</h2>
-                  <MonthlyTracker completions={completions} />
-                </div>
+                    {/* Shows the date when the habit was added. */}
+                    <p className='habit-created'>
+                      Created: {new Date(habit.createdAt).toLocaleDateString()}
+                    </p>
+                  </>
+                )}
               </div>
-            )}
+              {/* Right page of the book */}
+              <div className='habit-detail-right'>
+                <h2 className='completion-history-title'>Completion History</h2>
+                <MonthlyTracker completions={completions} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
