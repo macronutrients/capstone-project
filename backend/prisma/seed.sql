@@ -11,7 +11,7 @@ VALUES
 ('wolf', '/images/pets/GrayWolf-3.png', 'brave', 35),
 ('rabbit', '/images/pets/rabbit-5.png', 'snow', 40),
 ('koala', '/images/pets/koala-2.png', 'cool', 45),
-('turtle', '/images/pets/turtle-4.png', 'old', 50),
+('turtle', '/images/pets/Turtle-4.png', 'old', 50),
 ('lion', '/images/pets/Lion-4.png', 'king', 55),
 ('penguin', '/images/pets/Penguin-2.png', 'goal', 60),
 ('blackPanther', '/images/pets/BlackPanther-3.png', 'Goat', 65),
@@ -37,7 +37,6 @@ VALUES
 ('snow_leopard', '/images/pets/snow-leopard.png', 'ICE', 60),
 ('raccoon', '/images/pets/raccoon.png', 'DatGuy', 60),
 ('capybara', '/images/pets/capybara.png', 'Chill', 60),
-('axolotl', '/images/pets/axolotl.png', 'BubblyCup', 60),
 ('griffin', '/images/pets/griffin.png', 'CS', 60),
 ('flamingo', '/images/pets/flamingo.png', 'Flaming', 60),
 ('seahorse', '/images/pets/seahorse.png', 'Coral', 60),
@@ -45,6 +44,5 @@ VALUES
 ('manta_ray', '/images/pets/manta-ray.png', 'Skipper', 60),
 ('narwhal', '/images/pets/narwhal.png', 'Twist', 60),
 ('mammoth', '/images/pets/mammoth.png', 'Woolly', 60),
-('triceratops', '/images/pets/triceratops.png', 'Trio', 60),
 ('pegasus', '/images/pets/pegasus.png', 'Nimbus', 60)
 ON CONFLICT ("apiPetId") DO NOTHING;
