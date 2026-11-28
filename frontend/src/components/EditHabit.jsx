@@ -15,12 +15,12 @@ function EditHabit({ habit, onSave, onCancel, showNotes = false }) {
     if (!description.trim()) {
       return
     }
-
-    // Prepares the updated habit description.
-    const updatedData = {
-      description,
+    const updatedData = {}
+    // Prevents changing the description of a completed habit.
+    if (!habit.completed) {
+      updatedData.description = description
     }
-    // Adds notes if editing from the Habit Detail page.
+    // Adds notes when saving changes on the Habit Detail page.
     if (showNotes) {
       updatedData.notes = notes
     }
@@ -48,7 +48,6 @@ function EditHabit({ habit, onSave, onCancel, showNotes = false }) {
 
       // Sends the updated habit back to the page.
       onSave(data.habit)
-
     } catch (error) {
       console.error('Error editing habit:', error)
     }
@@ -56,20 +55,31 @@ function EditHabit({ habit, onSave, onCancel, showNotes = false }) {
 
   return (
     <div className='edit-habit'>
+      {showNotes && (
+        <div className='edit-habit-decoration'>
+          ༺ ✧ ༻
+        </div>
+      )}
       {/* Input field for editing the habit description. */}
+      {showNotes && <label htmlFor='habit-description'>Description</label>}
       <input
+        id='habit-description'
         type='text'
         value={description}
         onChange={(event) => setDescription(event.target.value)}
+        disabled={habit.completed && showNotes}
       />
-
-      {/* Shows the notes field only when showNotes is true. */}
+      {/* Shows the notes field when editing on the details page. */}
       {showNotes && (
-        <textarea
-          value={notes}
-          onChange={(event) => setNotes(event.target.value)}
-          placeholder='Add notes...'
-        />
+        <>
+          <label htmlFor='habit-notes'>Notes</label>
+          <textarea
+            id='habit-notes'
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+            placeholder='Add notes...'
+          />
+        </>
       )}
       {/* Save and cancel buttons. */}
       <div className='edit-habit-actions'>

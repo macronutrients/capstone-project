@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EditHabit from '../components/EditHabit'
+import MonthlyTracker from '../components/MonthlyTracker'
 import './HabitDetail.css'
+import book from '../assets/book.png'
 
 function HabitDetail() {
   // Gets the habit ID from the URL.
@@ -11,45 +13,69 @@ function HabitDetail() {
 
   // Stores a habit loaded from the backend.
   const [habit, setHabit] = useState(null)
+  // Stores the dates when the habit was completed.
+  const [completions, setCompletions] = useState([])
   // Stores an error message if the habit fails to load.
   const [error, setError] = useState('')
-
-  // Checks whether the user is editing the habit.
+  // Keeps track of whether the user is editing the habit.
   const [isEditing, setIsEditing] = useState(false)
 
   // Gets the authentication token.
   const token = localStorage.getItem('token')
-  
-  // Loads the selected habit.
-  useEffect(() => {
-    async function getHabit() {
-      setError('') // Clears any previous error message.
-      setHabit(null) // Clears the previous habit before loading a new one.
-      setIsEditing(false) // Closes the editing form when loading another habit.
-      try {
-        // Sends a request to get the habit from the backend.
-        const response = await fetch(`http://localhost:3000/habits/${id}`, {
-          headers: {
-            // Sends the authentication token for user verification.
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        const data = await response.json()
-        // Checks if the request failed.
-        if (!response.ok) {
-          setError(data.message || 'Failed to load habit.')
-          return
-        }
 
-        // Stores the retrieved habit in state.
-        setHabit(data)
-      } catch (error) {
-        console.error('Error loading habit:', error) // Logs the error for debugging.
-        setError('Failed to load habit.') // Stores an error message to display to the user.
+  // Fetches the selected habit from the backend.
+  async function getHabit() {
+    setError('') // Clears any previous error message.
+    setHabit(null) // Clears the previous habit before loading a new one.
+    setIsEditing(false) // Closes the editing form when loading another habit.
+    try {
+      // Sends a request to get the habit from the backend.
+      const response = await fetch(`http://localhost:3000/habits/${id}`, {
+        headers: {
+          // Sends the authentication token for user verification.
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const data = await response.json()
+      // Checks if the request failed.
+      if (!response.ok) {
+        setError(data.message || 'Failed to load habit.')
+        return
       }
+      // Stores the retrieved habit in state.
+      setHabit(data)
+    } catch (error) {
+      console.error('Error loading habit:', error) // Logs the error for debugging.
+      setError('Failed to load habit.') // Stores an error message to display to the user.
     }
+  }
 
+  // Fetches the completion history for the selected habit.
+  async function getCompletions() {
+    try {
+      // Sends a request to get the completion dates from the backend.
+      const response = await fetch(`http://localhost:3000/habits/${id}/completions`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        console.error(data.message || 'Failed to load completion history.')
+        return
+      }
+      // Stores the retrieved records in state.
+      setCompletions(data)
+    } catch (error) {
+      console.error('Error loading completion history:', error)
+    }
+  }
+
+  // Loads the selected habit and its completion history.
+  useEffect(() => {
     getHabit()
+    setCompletions([])
+    getCompletions()
   }, [id, token])
 
   // Updates the habit on the page and closes the editing form after saving.
@@ -83,44 +109,60 @@ function HabitDetail() {
           <h1>Habit Detail</h1>
         </div>
 
-        <div className='habit-detail-card'>
-          {/* Shows the editing form when the user clicks the edit button. */}
-          {isEditing && (
-            <EditHabit
-              habit={habit}
-              onSave={handleSave}
-              onCancel={() => setIsEditing(false)}
-              showNotes={true}
-            />
-          )}
-          {!isEditing && (
-            <>
-              <div className='habit-detail-description'>
-                <h2>{habit.description}</h2>
+        <div className='habit-detail-container'>
+          <img src={book} className='habit-detail-book' />
+          {/* Shows the habit information and completion history. */}
+          <div className='habit-detail-card'>
+            {/* Book pages */}
+            <div className='habit-detail-pages'>
+              {/* Left page of the book */}
+              <div className='habit-detail-left'>
+                {/* Shows the editing form when the user clicks the edit button. */}
+                {isEditing && (
+                  <EditHabit
+                    habit={habit}
+                    onSave={handleSave}
+                    onCancel={() => setIsEditing(false)}
+                    showNotes={true}
+                  />
+                )}
 
-                {!habit.completed && (
-                  <button
-                    className='edit-habit-button'
-                    onClick={() => setIsEditing(true)}
-                  >
-                    Edit Habit
-                  </button>
+                {/* Shows the habit details when not editing. */}
+                {!isEditing && (
+                  <>
+                    <button
+                      className='edit-habit-button'
+                      onClick={() => setIsEditing(true)}
+                    >
+                      {habit.completed && 'Edit Notes'}
+                      {!habit.completed && 'Edit Habit'}
+                    </button>
+
+                    <h2>{habit.description}</h2>
+
+                    <p className='habit-status'>{status}</p>
+
+                    <div className='habit-notes'>
+                      <h3>Notes</h3>
+                      <div className='notes-content'>
+                        <p>{habit.notes || 'No notes yet.'}</p>
+                      </div>
+                    </div>
+
+                    {/* Shows the date when the habit was added. */}
+                    <p className='habit-created'>
+                      Created: {new Date(habit.createdAt).toLocaleDateString()}
+                    </p>
+                  </>
                 )}
               </div>
-              <p className='habit-status'>{status}</p>
-              <div className='habit-notes'>
-                <h3>Notes</h3>
-
-                <div className='notes-content'>
-                  <p>{habit.notes || 'No notes yet.'}</p>
-                </div>
+              {/* Right page of the book */}
+              <div className='habit-detail-right'>
+                <h2 className='completion-history-title'>Completion History</h2>
+                <MonthlyTracker completions={completions} />
               </div>
-
-              <p className='habit-created'>
-                Created: {new Date(habit.createdAt).toLocaleDateString()}
-              </p>
-            </>
-          )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

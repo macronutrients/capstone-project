@@ -1,24 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 /* Main layout for the Habit Detail page */
 .habit-detail-page {
   min-height: 100vh; /* Covers the entire screen height. */
-  background-color: #cfd8ff;
+  background-image: url('../assets/desk.png');
+  background-size: cover; /* Makes the image cover the whole page. */
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 50px 40px;
+  box-sizing: border-box; /* Includes padding and borders in the size. */
 }
 
-/* Centers the page content horizontally */
 .habit-detail-content {
+  width: 100%;
   max-width: 650px;
-  margin: 0 auto;
+}
+
+/* Groups the book image and habit card together. */
+.habit-detail-container {
+  position: relative;
+  transform: translateY(-15px); /* Moves the container up. */
+}
+
+/* Book image */
+.habit-detail-book {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Moves the book left and up. */
+  width: 160%;
+  max-width: none;
+  height: auto;
+  z-index: 1; /* Keeps the book behind the habit card. */
+  filter: drop-shadow(10px 15px 12px rgba(65, 35, 15, 0.45));
 }
 
 /* Page heading and Back button */
 .habit-detail-header {
+  position: relative;
+  z-index: 2; /* Keeps the heading and Back button above the book image. */
   display: flex;
-  gap: 20px; /* Adds space between the Back button and heading. */
+  align-items: center;
   margin-bottom: 25px;
+  transform: translateY(20px);
 }
 
 .habit-detail-header h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Centers the heading. */
+  white-space: nowrap; /* Keeps the heading on one line. */
   font-size: 30px;
   margin: 0; /* Removes the default spacing around the heading. */
 }
@@ -32,53 +65,250 @@
 
 /* Main habit card */
 .habit-detail-card {
-  background-color: #e5eafe;
+  position: relative;
+  top: -25px;
+  z-index: 2;
   padding: 30px;
-  border-radius: 12px;
 }
 
-.habit-detail-description {
+/* Layout for the two book pages */
+.habit-detail-pages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two columns for the pages. */
+  gap: 90px;
+  width: 120%;
+  height: 550px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.habit-detail-left,
+.habit-detail-right {
+  box-sizing: border-box;
+  min-width: 0;
+  transform: translateY(35px);
+}
+
+/* Left page for habit information */
+.habit-detail-left {
+  position: relative;
   display: flex;
-  justify-content: space-between; /* Places the habit description on the left and Edit button on the right */
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 110px 45px 0;
+}
+
+/* Right page for the monthly tracker */
+.habit-detail-right {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding-right: 25px;
+  min-height: 0;
+}
+
+/* Habit description */
+.habit-detail-left h2 {
+  margin: 0;
+  max-height: 90px;
+  overflow-y: auto; /* Allows the description to scroll if it is too long. */
+  overflow-wrap: anywhere; /* Breaks long words onto the next line. */
 }
 
 /* Habit completion status */
 .habit-status {
-  background-color: #d2caff;
-  padding: 8px 14px;
-  border-radius: 20px;
-  display: inline-block; /* Keeps the status background around the text. */
+  color: #9443ce;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 /* Notes section */
 .habit-notes {
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid #b8c4ee;  /* Adds a line to separate the notes from the habit description. */
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #a0693759; /* Adds a line to separate the notes from the habit description. */
+}
+
+.habit-notes h3 {
+  margin: 10px 0 5px;
 }
 
 .notes-content {
-  background-color: #eceffa;
-  padding: 20px;
-  border-radius: 10px;
+  width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  padding: 10px 0;
+  box-sizing: border-box;
 }
 
-.edit-habit-button {
-  background-color: #c1b1ff;
-  padding: 10px 18px;
-  border-radius: 8px;
+.notes-content p {
+  margin: 0;
 }
 
 /* Date when habit was created */
 .habit-created {
-  margin-top: 25px;
+  margin-top: 10px;
   font-size: 14px;
   color: #525d82;
 }
 
+/* Edit button */
+.habit-detail-left .edit-habit-button {
+  position: absolute;
+  top: 85px;
+  right: 20px;
+  background-color: #f7b16b;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transform: translateY(-25px);
+}
+
+/* Editing form */
+.habit-detail-left .edit-habit {
+  width: calc(100% + 60px);
+  margin-left: -30px;
+  transform: translateY(-45px);
+}
+
+/* Decoration */
+.habit-detail-left .edit-habit-decoration {
+  text-align: center;
+  font-size: 27px;
+  color: #bc795e;
+  letter-spacing: 5px;
+  line-height: 1;
+  transform: translateY(-10px);
+}
+
+/* Description and notes labels */
+.habit-detail-left .edit-habit label {
+  display: block;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 600;
+  color: #574536;
+}
+
+/* Input and textarea fields */
+.habit-detail-left .edit-habit input,
+.habit-detail-left .edit-habit textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  background-color: #f7f0fe;
+  border: 1px solid #d5c3f7;
+}
+
 /* Notes field when editing */
-.habit-detail-card textarea {
+.habit-detail-left .edit-habit textarea {
   min-height: 95px;
+  height: 150px;
+}
+
+/* Save and Cancel buttons */
+.habit-detail-left .edit-habit-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.habit-detail-left .edit-habit-actions button {
+  width: 90px;
+  height: 37px;
+  box-sizing: border-box;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Save button */
+.habit-detail-left .edit-habit-actions button:first-child {
+  background-color: #a78bdb;
+  color: white;
+}
+
+/* Cancel button */
+.habit-detail-left .edit-habit-actions button:last-child {
+  background-color: #eae0f9;
+  border: 1px solid #c4b0e2;
+  color: #333333;
+}
+
+/* Calendar section */
+.completion-history-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 24px;
+  text-align: center;
+  margin: 40px 0 0;
+  color: #786cd9;
+}
+
+.monthly-tracker {
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  margin: 20px auto 0;
+}
+
+.monthly-tracker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.monthly-tracker-header h3 {
+  font-size: 17px;
+  margin: 0;
+}
+
+.monthly-tracker-header button {
+  background: transparent;
+  border: none;
+  color: #786cd9;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.monthly-tracker-weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #786cd9;
+}
+
+.monthly-tracker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)); /* Seven columns for the days of the week. */
+  grid-auto-rows: 1fr;
+  gap: 5px;
+  margin-top: 15px;
+  min-height: 260px;
+}
+
+.monthly-tracker-day {
+  aspect-ratio: 1; /* Keeps each day square. */
+  background-color: #f6f1fc;
+  border: 1px solid #d5c3f7;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Colors completed days. */
+.monthly-tracker-day.completed {
+  background-color: #a78bdb;
+  color: white;
 }

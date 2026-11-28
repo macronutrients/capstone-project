@@ -21,7 +21,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'2f615da72cc3d5bf4f17e22a875b35500d68675b95d49dfac05a3fb4a4ff6397'>;
+  StorageHashBase<'2575324676d4648021d5116a7aaecdeb2770bd1c16fcabeaf481a4cccc3505da'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -245,6 +245,11 @@ export type FieldOutputTypes = {
       readonly notes: CodecTypes['pg/text@1']['output'] | null;
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
+    readonly HabitCompletion: {
+      readonly date: TimestampString<3>;
+      readonly habitId: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+    };
     readonly Pet: {
       readonly apiPetId: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -278,6 +283,11 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly notes: CodecTypes['pg/text@1']['input'] | null;
       readonly userId: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly HabitCompletion: {
+      readonly date: CodecTypes['pg/timestamp-string@1']['input'];
+      readonly habitId: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
     };
     readonly Pet: {
       readonly apiPetId: CodecTypes['pg/text@1']['input'];
@@ -313,6 +323,11 @@ export type StorageColumnTypes = {
       readonly notes: CodecTypes['pg/text@1']['output'] | null;
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
+    readonly HabitCompletion: {
+      readonly date: TimestampString<3>;
+      readonly habitId: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+    };
     readonly Pet: {
       readonly apiPetId: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -347,6 +362,11 @@ export type StorageColumnInputTypes = {
       readonly notes: CodecTypes['pg/text@1']['input'] | null;
       readonly userId: CodecTypes['pg/int4@1']['input'];
     };
+    readonly HabitCompletion: {
+      readonly date: CodecTypes['pg/timestamp-string@1']['input'];
+      readonly habitId: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+    };
     readonly Pet: {
       readonly apiPetId: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -380,8 +400,16 @@ export namespace Models {
     id: CodecTypes['pg/int4@1']['output'];
     notes: CodecTypes['pg/text@1']['output'] | null;
     userId: CodecTypes['pg/int4@1']['output'];
+    completions: public_HabitCompletion[];
     user: public_User;
-    readonly [RelationKeys]?: 'user';
+    readonly [RelationKeys]?: 'completions' | 'user';
+  };
+  export type public_HabitCompletion = {
+    date: TimestampString<3>;
+    habitId: CodecTypes['pg/int4@1']['output'];
+    id: CodecTypes['pg/int4@1']['output'];
+    habit: public_Habit;
+    readonly [RelationKeys]?: 'habit';
   };
   export type public_Pet = {
     apiPetId: CodecTypes['pg/text@1']['output'];
@@ -419,6 +447,7 @@ export namespace Models {
 export declare const models: {
   public: {
     Habit: Models.public_Habit;
+    HabitCompletion: Models.public_HabitCompletion;
     Pet: Models.public_Pet;
     PetCollection: Models.public_PetCollection;
     User: Models.public_User;
@@ -512,6 +541,56 @@ type ContractBase = Omit<
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly HabitCompletion: {
+              columns: {
+                readonly date: {
+                  readonly dataType: 'pg/timestamp';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 3 };
+                  readonly many: false;
+                };
+                readonly habitId: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'HabitCompletion_habitId_date_key';
+                  readonly columns: readonly ['habitId', 'date'];
+                  readonly unique: true;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'HabitCompletion';
+                    readonly columns: readonly ['habitId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Habit';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -724,6 +803,10 @@ type ContractBase = Omit<
   readonly targetFamily: 'sql';
   readonly roots: {
     readonly Habit: { readonly namespace: 'public' & NamespaceId; readonly model: 'Habit' };
+    readonly HabitCompletion: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'HabitCompletion';
+    };
     readonly Pet: { readonly namespace: 'public' & NamespaceId; readonly model: 'Pet' };
     readonly PetCollection: {
       readonly namespace: 'public' & NamespaceId;
@@ -775,6 +858,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly completions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'HabitCompletion';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['habitId'];
+                };
+              };
               readonly user: {
                 readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
                 readonly cardinality: 'N:1';
@@ -796,6 +890,49 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly notes: { readonly column: 'notes' };
                 readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
+          readonly HabitCompletion: {
+            readonly fields: {
+              readonly date: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly habitId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly habit: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Habit';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['habitId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'HabitCompletion';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly date: { readonly column: 'date' };
+                readonly habitId: { readonly column: 'habitId' };
+                readonly id: { readonly column: 'id' };
               };
             };
           };
