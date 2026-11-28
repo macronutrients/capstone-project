@@ -15,7 +15,7 @@ async function resetDailyHabits(userId) {
   // Goes through each completed habit.
   for (const habit of completedHabits) {
     // Checks if the habit was completed before today.
-    if (new Date(habit.completedAt) < today) {
+    if (new Date(habit.completedAt.replace(' ', 'T') + 'Z') < today) {
       // Updates the habit in the database.
       await db.orm.public.Habit.where({ id: habit.id, userId: userId }).update({
         completed: false, // Resets the habit to incomplete.
